@@ -11,7 +11,7 @@ app.listen(port);
 app.use(bodyParser.urlencoded({extended: true})); 
 app.set("view engine", "ejs");
 
-http.listen(8080, () => {
+http.listen(process.env.PORT || 8080, () => {
   console.log('listening on *:'+8080);
 });
 
