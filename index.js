@@ -14,7 +14,6 @@ app.set("view engine", "ejs");
 var user;
 
 app.get('/', (req, res) => {
-	//res.sendFile(__dirname + '/login.html');
   res.render("login");
 });
 
@@ -33,15 +32,14 @@ io.on('connection', (socket) => {
 });
 
 app.post("/handle-form-data", (req, res) => {
-  // user.first_name = req.body.fname;
-  // user.last_name = req.body.lname;
-  //res.sendFile(__dirname + '/chat.html');
-  // res.sendFile(__dirname + '/chat.html');
-  // res.render('testPage', {
-  //       first_name:req.body.fname,
-  //       last_name:req.body.lname
-  //   });
-})
+  user.first_name = req.body.fname;
+  user.last_name = req.body.lname;
+
+  res.render('testPage', {
+    first_name:req.body.fname,
+    last_name:req.body.lname
+  });
+});
 
 http.listen(8080, () => {
 	console.log('listening on *:8080');
