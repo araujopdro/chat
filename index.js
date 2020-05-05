@@ -34,7 +34,8 @@ io.on('connection', (socket) => {
 app.post("/handle-form-data", (req, res) => {
   user.first_name = req.body.fname;
   user.last_name = req.body.lname;
-
+  res.send('Obrigado por entrar em contato conosco, ' + user.first_name + '! Responderemos em breve!');
+  
   res.render("chat", {
     first_name:req.body.fname,
     last_name:req.body.lname
