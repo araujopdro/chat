@@ -5,16 +5,14 @@ const bodyParser = require('body-parser');
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 app.listen(port);
 
 app.use(bodyParser.urlencoded({extended: true})); 
 app.set("view engine", "ejs");
 
-var user;
-
-app.get('/', (req, res) => {
-  res.render("login");
+http.listen(8080, () => {
+  console.log('listening on *:'+8080);
 });
 
 
@@ -31,6 +29,14 @@ io.on('connection', (socket) => {
   });
 });
 
+
+///
+
+app.get('/', (req, res) => {
+  res.render("login");
+});
+
 app.post("/handle-form-data", (req, res) => {
   res.render("chat", {});
 });
+
