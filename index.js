@@ -19,9 +19,9 @@ http.listen(8080, () => {
 io.on('connection', (socket) => {
   console.log('a user connected');
 
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
-    io.emit('chat message', msg);
+  socket.on('chat message', (data) => {
+    console.log(data);
+    io.emit('chat message', data);
   });
 
   socket.on('disconnect', () => {
@@ -36,7 +36,9 @@ app.get('/', (req, res) => {
   res.render("login");
 });
 
-app.post("/handle-form-data", (req, res) => {
-  res.render("chat", {});
+var user_data;
+app.post("/chat-room", (req, res) => {
+  console.log(req);
+  res.render("chat", req.body);
 });
 
