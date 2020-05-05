@@ -35,12 +35,8 @@ app.post("/handle-form-data", (req, res) => {
   user.first_name = req.body.fname;
   user.last_name = req.body.lname;
 
-  res.render('testPage', {
+  res.render("chat", {
     first_name:req.body.fname,
     last_name:req.body.lname
   });
 });
-
-// http.listen(8080, () => {
-// 	console.log('listening on *:8080');
-// });
