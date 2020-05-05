@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
+var port = process.env.PORT || 8080;
+app.listen(port);
+
 app.use(bodyParser.urlencoded({extended: true})); 
 app.set("view engine", "ejs");
 
