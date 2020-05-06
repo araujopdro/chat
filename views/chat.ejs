@@ -5,6 +5,14 @@
     	html{
     		font-family: sans-serif;
     	}
+    	.entrou{
+    		font-size: 9px;
+    	}
+
+    	.entrou .connected-name, .entrou .uconnected-name, .entrou .disconnected-name{
+    		font-weight: 800;
+    	}
+
     	.message-text{
     		margin-left: 5px;
     	}
@@ -15,56 +23,114 @@
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.0.js"></script>
     <script>
-		var socket = io();
-		var _fname = <%- JSON.stringify(fname) %>;
-		var _lname = <%- JSON.stringify(lname) %>;
+  		var _fname = <%- JSON.stringify(fname) %>;
+  		var _lname = <%- JSON.stringify(lname) %>;
+  		var usercode;
+  		var socket = io(window.location.host, {query: "name="+_fname+" "+_lname});
+      socket.on('connect', () => {
+        console.log(socket.id);
+        usercode = socket.id;
+      });
+      
+  		var msgs_sent = 0;
 
-		var usercode = GetUserCode(_fname + _lname);
-		var msgs_sent = 0;
-		
-      	$( document ).ready(function() {
+    	$( document ).ready(function() {		
 		    $('form').submit(function(e) {
-	            e.preventDefault();
-	            msgs_sent++;
-	            socket.emit('chat message', {user_id: usercode+"msg"+msgs_sent.toString(), user_name: _fname + " " + _lname, msg:$('#input_message').val()});
-	            $('#input_message').val('');
-	            return false;
-	        });
+          e.preventDefault();
+          msgs_sent++;
+          socket.emit('chat message', {user_id: usercode+"msg"+msgs_sent.toString(), user_name: _fname + " " + _lname, msg:$('#input_message').val()});
+          $('#input_message').val('');
+          return false;
+        });
+    	});
 
-          	socket.on('chat message', function(data){
-            	var li = $('<li></li>');
+    	
+      socket.on('chat history', function(data){
+        for(var i = 0; i < data.ch.length; i++){
+          if(isObject(data.ch[i])){
+            CreateMsgElement("message", data.ch[i]);
+          }else{
+            CreateMsgElement("connected", data.ch[i]);
+          }
+        }
 
-				var span_name = $('<span></span>');
-				span_name.text(data.user_name);
+        CreateMsgElement("uconnected");
+      });
 
-				var span_msg = $('<span></span>');
-				span_msg.text(data.msg);
+      socket.on('chat message', function(data){
+        CreateMsgElement("message", data);
+    	});
 
-				li.append(span_name);
-				li.append(span_msg);
-            	$('#messages').append(li);
+  		socket.on('user connected', function(data){
+        CreateMsgElement("connected", data);
+    	});
 
-				li.attr('id', data.user_id);
-				span_name.attr('class', "message-name");
-				span_msg.attr('class', "message-text");
-          	});
-      	});
+      socket.on('user disconnected', function(data){
+        CreateMsgElement("disconnected", data);
+        console.log("" + data);
+      });
+
+      function isObject (value) {
+        return value && typeof value === 'object' && value.constructor === Object;
+      }
+
+    	function GetUserCode(str){
+    		var code = "";
+    		for(var i = 0; i < str.length; i++){
+    			var n;
+    			if(i % 2 == 0){ 
+    				n = str.charCodeAt(i);
+    				code += n.toString();
+		   	}else{
+		   		code += str[i];
+		   	};
+    		}
+    		return code;
+    	}
+
+      function CreateMsgElement(type, data){
+        var c = document.createDocumentFragment();
+        var div = document.createElement("div");
+        var inner_div = document.createElement("div");
+        var span_name = document.createElement("span");
+        var span_msg = document.createElement("span");
+
+        switch(type) {
+          case "message":
+              inner_div.className = data.user_id;
+              span_name.textContent = data.user_name;
+              span_msg.textContent = data.msg;
+            break;
+          case "connected":
+              inner_div.className = "entrou";
+              span_name.textContent = data;
+              span_msg.textContent = " entrou no chat.";
+            break;
+          case "uconnected":
+              inner_div.className = "entrou";
+              span_name.textContent = "Você";
+              span_msg.textContent = " entrou no chat.";
+            break;
+          case "disconnected":
+              inner_div.className = "entrou";
+              span_name.textContent = data;
+              span_msg.textContent = " saiu do chat.";
+            break;
+          default:
+              inner_div.className = "none";
+        }
+
+        div.className = "message-holder";
+        span_name.className = type+"-name";
+        span_msg.className = type+"-text";
 
 
-
-      	function GetUserCode(str){
-      		var code = "";
-      		for(var i = 0; i < str.length; i++){
-      			var n;
-      			if(i % 2 == 0){ 
-      				n = str.charCodeAt(i);
-      				code += n.toString();
-			   	}else{
-			   		code += str[i];
-			   	};
-      		}
-      		return code;
-      	}
+        inner_div.appendChild(span_name);
+        inner_div.appendChild(span_msg);
+        div.appendChild(inner_div);
+        c.appendChild(div);
+        $('#messages').append(c);
+      }
     </script>
 
   </head>
