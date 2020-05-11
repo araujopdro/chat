@@ -1,9 +1,34 @@
 const express = require('express');
 const app = express();
+
+const mysql = require('mysql');
+
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const ejs = require("ejs");
+
 const bodyParser = require('body-parser');
+
+/////////////////
+
+var connection = mysql.createConnection({
+  host: 'webcastlogin.vocsmultimidia.com.br',
+  database: 'webcastlogin',
+  user: 'webcastlogin',
+  password: '120705'
+});
+
+connection.connect(function(error){
+  if(!error) {
+    console.log("Database is connected ... nn");
+  } else {
+    console.log(error);
+    console.log("Error connecting database ... nn");
+  }
+});
+
+/////////////////
+
 
 http.listen(process.env.PORT || 8080, () => {
   console.log('listening on *:'+8080);
@@ -12,8 +37,15 @@ http.listen(process.env.PORT || 8080, () => {
 var chat_history = [];
 var current_users = [];
 
-app.use(bodyParser.urlencoded({extended: true})); 
 app.set("view engine", "ejs");
+
+app.use(bodyParser.urlencoded({extended: true})); 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 
 io.on('connection', (socket) => {
   console.log(socket.id+' connected');
@@ -41,8 +73,53 @@ io.on('connection', (socket) => {
 
 ///
 app.get('/', (req, res) => {
-  res.render("login");
+  res.render("register");
 });
+
+app.post('/', (req,res) => {
+  const {fname, lname, email} = req.body;
+
+  // connection.execute("INSERT INTO `users`(`name`,`email`,`password`) VALUES(?,?,?)",[user_name, user_email, hash_pass])
+  // .then(result => {
+  //     res.send(`your account has been created successfully, Now you can <a href="/">Login</a>`);
+  // }).catch(err => {
+  //     if (err) throw err;
+  // });
+});
+
+app.post('/login', (req,res) => {
+  const {fname, lname, email} = req.body;
+  
+  // connection.execute("SELECT * FROM `users` WHERE `email`=?",[email])
+  // .then(([rows]) => {
+  //     bcrypt.compare(user_pass, rows[0].password).then(compare_result => {
+  //         if(compare_result === true){
+  //             req.session.isLoggedIn = true;
+  //             req.session.userID = rows[0].id;
+
+  //             res.redirect('/');
+  //         }
+  //         else{
+  //             res.render('login-register',{
+  //                 login_errors:['Invalid Password!']
+  //             });
+  //         }
+  //     })
+  //     .catch(err => {
+  //         if (err) throw err;
+  //     });
+
+
+  // })
+  // .catch(err => {
+  //     if (err) throw err;
+  // });
+});
+
+
+
+
+/////////////
 
 var latest_user;
 app.post("/chat-room", (req, res) => {
