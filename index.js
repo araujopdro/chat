@@ -87,7 +87,7 @@ io.on('connect', (socket) => {
 
 ///
 app.get('/', (req, res) => {
-  res.render("register");
+  res.render("login");
 });
 
 
