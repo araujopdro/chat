@@ -11,20 +11,26 @@ const bodyParser = require('body-parser');
 
 /////////////////
 
-var connection = mysql.createConnection({
-  host: 'webcastlogin.vocsmultimidia.com.br',
-  database: 'webcastlogin',
-  user: 'webcastlogin',
-  password: '120705'
+var servidor = '177.38.44.3';
+var nomeBanco = 'chat';
+var usuario = 'pedro';
+var senha = 'oxehHa3N';
+
+const connection = mysql.createConnection(
+{
+  host: servidor,
+  user: usuario,
+  password: senha,
+  database: nomeBanco
 });
 
-connection.connect(function(error){
-  if(!error) {
+
+connection.connect(function(err){
+if(!err) {
     console.log("Database is connected ... nn");
-  } else {
-    console.log(error);
+} else {
     console.log("Error connecting database ... nn");
-  }
+}
 });
 
 /////////////////
@@ -37,6 +43,10 @@ http.listen(process.env.PORT || 8080, () => {
 var chat_history = [];
 var current_users = [];
 
+let statusInput;
+let tokenInput;
+let socket;
+
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({extended: true})); 
@@ -47,15 +57,19 @@ app.use(function(req, res, next) {
 });
 
 
-io.on('connection', (socket) => {
-  console.log(socket.id+' connected');
+io.on('connect', (socket) => {
+  console.log(socket.id + " " + socket.handshake.query.name +' connected');
+  console.log(socket.id + " " + socket.handshake.query.email +' connected');
+
   socket.broadcast.emit('user connected', socket.handshake.query.name);
   io.to(socket.id).emit('chat history', {ch: chat_history});
-
+  //ADD NAME LOGGED IN TO CHAT HISTORY
   AddToChatHistory(socket.handshake.query.name);
-  current_users.push({"id":socket.id, "name":socket.handshake.query.name});
+
+  current_users.push({"id":socket.id, "name":socket.handshake.query.name, "email":socket.handshake.query.email});
   
   socket.on('chat message', (data) => {
+    //ADD MSG LOGGED IN TO CHAT HISTORY
     AddToChatHistory(data);
     io.emit('chat message', data);
   });
@@ -64,68 +78,81 @@ io.on('connection', (socket) => {
     console.log(socket.id+' disconnected');
     console.log(current_users);
     var index = current_users.findIndex(x => x.id === socket.id);
-    console.log(index);
     socket.broadcast.emit('user disconnected', current_users[index].name);
    // current_users.splice(index);
-    console.log(reason);
   });
 });
+
+///
 
 ///
 app.get('/', (req, res) => {
   res.render("register");
 });
 
-app.post('/', (req,res) => {
-  const {fname, lname, email} = req.body;
 
-  // connection.execute("INSERT INTO `users`(`name`,`email`,`password`) VALUES(?,?,?)",[user_name, user_email, hash_pass])
-  // .then(result => {
-  //     res.send(`your account has been created successfully, Now you can <a href="/">Login</a>`);
-  // }).catch(err => {
-  //     if (err) throw err;
-  // });
+app.get('/login', (req, res) => {
+  res.render("login");
+});
+
+app.post('/', (req,res) => {
+  const {id, fname, lname, email} = req.body;
+  connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
+    if (error) {
+      res.send({
+        "code":400,
+        "failed":"error ocurred"
+      })
+    }else{
+      if(results.length >0){
+        res.send({
+          "code":403,
+          "failed":"error ocurred"
+        });
+      }
+      else{
+        connection.query('INSERT INTO users SET ?',{id, fname, lname, email}, function (error, results, fields) {
+          if (error) {
+            console.log(error)
+          } else {
+              res.render("login");
+            }
+        });
+      }
+    }
+  });  
 });
 
 app.post('/login', (req,res) => {
-  const {fname, lname, email} = req.body;
-  
-  // connection.execute("SELECT * FROM `users` WHERE `email`=?",[email])
-  // .then(([rows]) => {
-  //     bcrypt.compare(user_pass, rows[0].password).then(compare_result => {
-  //         if(compare_result === true){
-  //             req.session.isLoggedIn = true;
-  //             req.session.userID = rows[0].id;
-
-  //             res.redirect('/');
-  //         }
-  //         else{
-  //             res.render('login-register',{
-  //                 login_errors:['Invalid Password!']
-  //             });
-  //         }
-  //     })
-  //     .catch(err => {
-  //         if (err) throw err;
-  //     });
-
-
-  // })
-  // .catch(err => {
-  //     if (err) throw err;
-  // });
+  const {email} = req.body;
+  connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
+    if (error) {
+      res.send({
+        "code":400,
+        "failed":"error ocurred"
+      })
+    }else{
+      if(results.length >0){
+        console.log(results);
+        res.render("chat", results[0]);
+      }
+      else{
+        res.send({
+          "code":206,
+          "success":"Email does not exits"
+        });
+      }
+    }
+  });
 });
-
-
-
 
 /////////////
 
-var latest_user;
-app.post("/chat-room", (req, res) => {
-  latest_user = req.body.fname + " " + req.body.lname;
-  res.render("chat", req.body);
-});
+// var latest_user;
+// app.post("/chat-room", (req, res) => {
+//   latest_user = req.body.fname + " " + req.body.lname;
+//   res.render("chat", req.body);
+// });
 
 ///
 function AddToChatHistory(e){

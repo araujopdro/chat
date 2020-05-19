@@ -23,13 +23,16 @@
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.0.js"></script>
     <script>
-  		var _fname = <%- JSON.stringify(fname) %>;
-  		var _lname = <%- JSON.stringify(lname) %>;
-  		var usercode;
-  		var socket = io(window.location.host, {query: "name="+_fname+" "+_lname});
+
+      var _id = <%- JSON.stringify(id) %>;
+      var _fname = <%- JSON.stringify(fname) %>;
+      var _lname = <%- JSON.stringify(lname) %>;
+      var _email = <%- JSON.stringify(email) %>;
+  		
+      var socket = io(window.location.host, {query:'name='+_fname+" "+_lname+"&email="+_email});
+
       socket.on('connect', () => {
         console.log(socket.id);
-        usercode = socket.id;
       });
       
   		var msgs_sent = 0;
