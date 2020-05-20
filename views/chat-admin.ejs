@@ -523,7 +523,7 @@
       var _company = <%- JSON.stringify(company) %>;
       var _mod = <%- JSON.stringify(mod) %>;
       
-      var socket = io(window.location.host, {query:'name='+_name+"&email="+_email+"&company="+_company+"&mod="+_mod});
+      var socket = io(window.location.host, {query:'name='+_name+"&email="+_email+"&company="+_company+"&mod="+_mod, transports: ['websocket']});
 
       socket.on('connect', () => {
         console.log(socket.id);
