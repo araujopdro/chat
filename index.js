@@ -60,6 +60,7 @@ app.use(express.static(__dirname + '/public'));
 
 
 io.on('connect', (socket) => {
+  res.render("login");
   socket.broadcast.emit('user connected', socket.handshake.query.name);
   io.to(socket.id).emit('chat history', {ch: chat_history});
   //ADD NAME LOGGED IN TO CHAT HISTORY
