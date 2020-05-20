@@ -101,9 +101,15 @@ io.on('connect', (socket) => {
 ///
 
 ///
-
 app.get('/usuarios_logados', (req, res) => {
-  res.send(current_users);
+  console.log("ul")
+  let result = '<table>';
+  for(var i = 0; i < current_users.length; i++){
+    result += "<tr>" + current_users[i] + "</tr>";
+  }
+  result += '</table>';
+  console.log(result)
+  res.send(result);
 });
 
 app.get('*', (req, res) => {
@@ -153,7 +159,15 @@ app.post('/login', (req,res) => {
     }else{
       if(results.length == 1){
         user = results[0];
-        if(user.password == password){
+        var found = false;
+        for(var i = 0; i < current_users.length; i++) {
+            if (current_users[i].email == user.email) {
+                found = true;
+                break;
+            }
+        }
+          
+        if(user.password == password && !found){
           //connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
           connection.query('UPDATE users SET logged = ? WHERE id = ?', [1, user.id], async function (error, results, fields) {
             if (error) {
