@@ -105,6 +105,11 @@ app.get('*', (req, res) => {
   res.render("login");
 });
 
+app.get('/report', (req, res) => {
+  res.render("login_report");
+});
+
+
 app.post('/', (req,res) => {
   const {id, name, company, email} = req.body;
   connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
@@ -165,6 +170,36 @@ app.post('/login', (req,res) => {
               }
             } 
           });
+        }else{
+          console.log("errou a senha");
+          res.render("login_pass");
+        }
+      }else{
+        console.log("usuario n passou");
+        res.render("login_user");
+      }
+    }
+  });
+});
+
+app.post('/login_report', (req,res) => {
+  const {email, password} = req.body;
+  var user;
+  connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
+    if (error) {
+      res.send({
+        "code":400,
+        "failed":"error ocurred"
+      })
+    }else{
+      if(results.length == 1){
+        user = results[0];
+        if(user.password == password){
+          if(user.mod == 4){
+            res.render("report", user);
+          }else{
+            res.render("chat", user);
+          }
         }else{
           console.log("errou a senha");
           res.render("login_pass");

@@ -346,6 +346,7 @@
         font-size: 0.8em;
         overflow-wrap: break-word;
         display: block;
+      max-width: 15vw;
       }
 
       #messages{
@@ -397,6 +398,9 @@
       }
 
       @media (min-width: 320px) and (max-width: 1024px) and (orientation: portrait)  {
+         .message-text{
+          max-width: 75vw;
+        }
         .main{
             flex-direction: column;
             font-size: 1.2vw;
@@ -551,6 +555,12 @@
           $('#input_message').val('');
           return false;
         });
+
+        $('#chkbx').change(function() {
+            if(this.checked) {
+              $("#messages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 220);
+            }     
+        });
       });
 
       
@@ -583,9 +593,6 @@
         console.log("" + data);
       });
 
-      function scroll(){
-        $("#messages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 100);
-      }
 
       function limparChat(){
         $('#messages').empty();
@@ -670,7 +677,7 @@
         <div class="form-holder">
           <div id="messages"></div>
           <div class="checkbox-holder">
-            <input type="checkbox" class="autoscroll" onclick="scroll()" name="autoscroll" value="auto" checked=checked>
+            <input type="checkbox" class="autoscroll" id="chkbx" name="autoscroll" value="auto" checked=checked>
             <label class="noto-bold" for="autoscroll"> autoscroll</label>
 
             <button onclick="callClearChat()" id="limpar-chat" ><i class="fas fa-trash"></i></button>
