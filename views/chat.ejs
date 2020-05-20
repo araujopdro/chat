@@ -565,6 +565,10 @@
         CreateMsgElement("message", data);
       });
 
+      socket.on('clear chat', function(data){
+        limparChat();
+      });
+
       socket.on('user connected', function(data){
         CreateMsgElement("connected", data);
       });

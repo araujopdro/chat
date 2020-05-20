@@ -74,9 +74,17 @@ io.on('connect', (socket) => {
   
   socket.on('chat message', (data) => {
     //ADD MSG LOGGED IN TO CHAT HISTORY
-    AddToChatHistory(data);
+    var chat_history = [];
     io.emit('chat message', data);
   });
+
+
+  socket.on('clear chat', (data) => {
+    //ADD MSG LOGGED IN TO CHAT HISTORY
+    chat_history = [];
+    io.emit('clear chat');
+  });
+
 
   socket.on('disconnect', (reason) => {
     console.log(socket.id+' disconnected');
