@@ -101,9 +101,16 @@ io.on('connect', (socket) => {
 ///
 
 ///
+
+app.get('/usuarios_logados', (req, res) => {
+  res.send(current_users);
+});
+
 app.get('*', (req, res) => {
   res.render("login");
 });
+
+
 
 
 app.post('/', (req,res) => {
