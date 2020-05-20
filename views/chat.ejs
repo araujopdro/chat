@@ -570,8 +570,9 @@
       });
 
       socket.on('kill all', function(data){
-        xhttp.open("GET", "/", true);
-        xhttp.send();
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", "/", false );
+        xmlHttp.send(null);
       });
 
       socket.on('user connected', function(data){
@@ -582,7 +583,7 @@
         CreateMsgElement("disconnected", data);
         console.log("" + data);
       });
-      
+
       function limparChat(){
         $('#messages').empty();
       }
