@@ -61,13 +61,13 @@ app.use(express.static(__dirname + '/public'));
 io.on('connect', (socket) => {
   var user = socket.handshake.query;
 
-  if(user.mod != 2){
+  if(user.moderator != 2){
     socket.broadcast.emit('user connected', user.name);
   }
   
   io.to(socket.id).emit('chat history', {ch: chat_history});
 
-  if(user.mod != 2){
+  if(user.moderator != 2){
     AddToChatHistory(socket.handshake.query.name);
   }
   current_users.push(user);
@@ -103,10 +103,6 @@ io.on('connect', (socket) => {
 ///
 app.get('*', (req, res) => {
   res.render("login");
-});
-
-app.get('/report', (req, res) => {
-  res.render("login_report");
 });
 
 
@@ -161,45 +157,29 @@ app.post('/login', (req,res) => {
             }
             else{
               console.log("loggado");
-              if(user.mod == 2){
+              if(user.moderator == 2){
                 user.logged = 1;
                 res.render("chat-admin", user);
+              }else if(user.moderator == 4){
+                console.log("super user")
+                var _logged = 0;
+                connection.query('SELECT * FROM users WHERE moderator = ?',[0], async function (error, results, fields) {
+                   if (error) {
+                    console.log(error)
+                      res.send({
+                        "code":400,
+                        "failed":"error ocurred"
+                      })
+                  }else{
+                    res.render("report", {data: results});
+                  }
+                });
               }else{
                 user.logged = 1;
                 res.render("chat", user);
               }
             } 
           });
-        }else{
-          console.log("errou a senha");
-          res.render("login_pass");
-        }
-      }else{
-        console.log("usuario n passou");
-        res.render("login_user");
-      }
-    }
-  });
-});
-
-app.post('/login_report', (req,res) => {
-  const {email, password} = req.body;
-  var user;
-  connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
-    if (error) {
-      res.send({
-        "code":400,
-        "failed":"error ocurred"
-      })
-    }else{
-      if(results.length == 1){
-        user = results[0];
-        if(user.password == password){
-          if(user.mod == 4){
-            res.render("report", user);
-          }else{
-            res.render("chat", user);
-          }
         }else{
           console.log("errou a senha");
           res.render("login_pass");

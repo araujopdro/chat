@@ -293,17 +293,6 @@
       #title-break{
         display: none;
       }
-
-      .warning{
-        font-family: sans-serif;
-        font-size: 0.8em;
-        line-height: 1em;
-        margin: 0.6em 0;
-        background: #ffd4d4;
-        color: #fc0303;
-        border-radius: 1em;
-        padding: 0.6em 1em;
-      }
       @media (min-width: 767px) and (max-width: 1024px) and (orientation: portrait)  {
         .main{
           font-size: 0.85vw !important;
@@ -414,6 +403,8 @@
     </style>
     
     <script type="text/javascript">
+        var data = <% JSON.stringify(data) %>
+        console.log(data);
         function windowSize(){
             var w = document.documentElement.clientWidth;
             var h = document.documentElement.clientHeight;
@@ -437,25 +428,8 @@
         <div class="logo-holder">
           <img class="imgs" src="images/logo0.png">
         </div>
-        <div class="f-box" id="f-box-a">
-          <span class="title noto-bold">COOPER UP TRANSFORMA <br id="title-break">ONLINE - 20/05</span>
-        </div>
-        <div class="form-pos-holder">
-        <hr><br>
-        <h1>Cadastro realizado com sucesso. <i class="fas fa-check-circle"></i></h1>
-        <span>Você será redirecionado para o site da Raízen</span>
-        <br><br><br><br><br><hr>
-      </div>
         <div class="form-holder">
-          <form class="form" action="/login" method="POST" tabindex="1">
-            <div class="form-inputs">
-                <input class="noto-bold" type="email" name="email" placeholder="e-mail" required/>
-                <span class="warning noto noto-regular">*Email não cadastrado ou incorreto</span>
-                <!--<input class="noto-bold" type="text" name="name" placeholder="nome" required/>-->
-                <input class="noto-bold" type="password" name="password" placeholder="senha" required/>
-              </div>
-              <div class="submit"><input id="enviar" type="submit" name="sent" value="ENTRAR"></div>
-          </form>
+          
         </div>
         <div class="line-bottom"></div>
     </div>
