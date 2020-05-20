@@ -167,7 +167,7 @@ app.post('/login', (req,res) => {
             }
         }
           
-        if(user.password == password && !found){
+        if(user.password == password){
           //connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
           connection.query('UPDATE users SET logged = ? WHERE id = ?', [1, user.id], async function (error, results, fields) {
             if (error) {
