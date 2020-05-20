@@ -521,9 +521,11 @@
       var _name = <%- JSON.stringify(name) %>;
       var _email = <%- JSON.stringify(email) %>;
       var _company = <%- JSON.stringify(company) %>;
+      var _logged = <%- JSON.stringify(logged) %>;
       var _mod = <%- JSON.stringify(mod) %>;
       
-      var socket = io(window.location.host, {query:'name='+_name+"&email="+_email+"&company="+_company+"&mod="+_mod, transports: ['websocket']});
+
+      var socket = io(window.location.host, {query:'name='+_name+"&email="+_email+"&company="+_company+"&mod="+_mod+"&logged="+_logged, transports: ['websocket']});
 
       socket.on('connect', () => {
         console.log(socket.id);

@@ -293,6 +293,17 @@
       #title-break{
         display: none;
       }
+
+      .warning{
+        font-family: sans-serif;
+        font-size: 0.8em;
+        line-height: 1em;
+        margin: 0.6em 0;
+        background: #ffd4d4;
+        color: #fc0303;
+        border-radius: 1em;
+        padding: 0.6em 1em;
+      }
       @media (min-width: 767px) and (max-width: 1024px) and (orientation: portrait)  {
         .main{
           font-size: 0.85vw !important;
@@ -440,7 +451,8 @@
             <div class="form-inputs">
                 <input class="noto-bold" type="email" name="email" placeholder="e-mail" required/>
                 <!--<input class="noto-bold" type="text" name="name" placeholder="nome" required/>-->
-                <input class="noto-bold" type="password" name="password" placeholder="senha" required/>
+                <input class="noto-bold" type="password" name="password" placeholder="senha*" required/>
+                <span class="warning noto noto-regular">*Senha Incorreta</span>
               </div>
               <div class="submit"><input id="enviar" type="submit" name="sent" value="ENTRAR"></div>
           </form>

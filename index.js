@@ -42,7 +42,6 @@ http.listen(process.env.PORT || 8080, () => {
 
 var chat_history = [];
 var current_users = [];
-var current_mods = [];
 
 let statusInput;
 let tokenInput;
@@ -60,19 +59,19 @@ app.use(express.static(__dirname + '/public'));
 
 
 io.on('connect', (socket) => {
-  res.render("login");
-  socket.broadcast.emit('user connected', socket.handshake.query.name);
-  io.to(socket.id).emit('chat history', {ch: chat_history});
-  //ADD NAME LOGGED IN TO CHAT HISTORY
-  AddToChatHistory(socket.handshake.query.name);
+  var user = socket.handshake.query;
 
-  if(socket.handshake.query.mod == 1){
-    current_users.push({"id":socket.id, "name":socket.handshake.query.name, "email":socket.handshake.query.email});
-  }
-  else{
-    current_mods.push({"id":socket.id, "name":socket.handshake.query.name, "email":socket.handshake.query.email});
+  if(user.mod != 2){
+    socket.broadcast.emit('user connected', user.name);
   }
   
+  io.to(socket.id).emit('chat history', {ch: chat_history});
+
+  if(user.mod != 2){
+    AddToChatHistory(socket.handshake.query.name);
+  }
+  current_users.push(user);
+
   socket.on('chat message', (data) => {
     //ADD MSG LOGGED IN TO CHAT HISTORY
     AddToChatHistory(data);
@@ -97,7 +96,6 @@ io.on('connect', (socket) => {
   });
 
   console.log(current_users);
-  console.log(current_mods);
 });
 
 ///
@@ -136,8 +134,8 @@ app.post('/', (req,res) => {
 });
 
 app.post('/login', (req,res) => {
-  const {email, name, password} = req.body;
-
+  const {email, password} = req.body;
+  var user;
   connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
     if (error) {
       res.send({
@@ -145,24 +143,35 @@ app.post('/login', (req,res) => {
         "failed":"error ocurred"
       })
     }else{
-      if(results.length == 1 && password == "transforma1"){
-        if(results[0].mod == 2){
-          results[0].name = name;
-          res.render("chat-admin", results[0]);
+      if(results.length == 1){
+        user = results[0];
+        if(user.password == password){
+          //connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
+          connection.query('UPDATE users SET logged = ? WHERE id = ?', [1, user.id], async function (error, results, fields) {
+            if (error) {
+              res.send({
+                "code":400,
+                "failed":"error ocurred"
+              })
+            }
+            else{
+              console.log("loggado");
+              if(user.mod == 2){
+                user.logged = 1;
+                res.render("chat-admin", user);
+              }else{
+                user.logged = 1;
+                res.render("chat", user);
+              }
+            } 
+          });
         }else{
-          results[0].name = name;
-          res.render("chat", results[0]);
+          console.log("errou a senha");
+          res.render("login_pass");
         }
-      }else if(password != "transforma1"){
-        res.send({
-          "code":401,
-          "success":"Wrong password"
-        });
       }else{
-        res.send({
-          "code":401,
-          "success":"User unknown"
-        });
+        console.log("usuario n passou");
+        res.render("login_user");
       }
     }
   });
