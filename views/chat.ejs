@@ -1,53 +1,499 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <title>Chat</title>
-    <style>
-    	html{
-    		font-family: sans-serif;
-    	}
-    	.entrou{
-    		font-size: 9px;
-    	}
+    <title>UPL</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="https://kit.fontawesome.com/3f043c6910.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
 
-    	.entrou .connected-name, .entrou .uconnected-name, .entrou .disconnected-name{
-    		font-weight: 800;
-    	}
 
-    	.message-text{
-    		margin-left: 5px;
-    	}
-    	.message-name{
-    		font-weight: 800;
-    	}
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+    <style type="text/css">
+      @font-face {
+        font-family: "NotoSans";
+        src: url("fonts/NotoSans-Light.ttf") format("truetype");
+        font-weight: lighter;
+      }
+
+      @font-face {
+        font-family: "NotoSans";
+        src: url("fonts/NotoSans-Regular.ttf") format("truetype");
+        font-weight: normal;
+      }
+
+      @font-face {
+        font-family: "NotoSans";
+        src: url("fonts/NotoSans-Italic.ttf") format("truetype");
+        font-style: italic;
+      }
+
+      @font-face {
+        font-family: "NotoSans";
+        src: url("fonts/NotoSans-BoldItalic.ttf") format("truetype");
+        font-style: italic;
+        font-weight: bold;
+      }
+
+      @font-face {
+        font-family: "NotoSans";
+        src: url("fonts/NotoSans-Bold.ttf") format("truetype");
+        font-weight: bold;
+      }
+
+      .noto-light{
+        font-family:"NotoSans", sans-serif;
+        font-weight: lighter;
+      }
+
+      .noto-regular{
+        font-family:"NotoSans", sans-serif;
+        font-weight: normal;
+      }
+
+      .noto-italic{
+        font-family:"NotoSans", sans-serif;
+        font-style: italic;
+      }
+
+      .noto-bold{
+        font-family:"NotoSans", sans-serif;
+        font-weight: bold;
+      }
+
+      .noto-bolditalic{
+        font-family:"NotoSans", sans-serif;
+        font-style: italic;
+        font-weight: bold;
+      }
+
+      html, body {
+          margin: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+
+          position: relative;
+        font-family: "NotoSans", sans-serif;
+        color: white;
+      }
+
+      .img-fundo{
+        position: absolute;
+        height: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #detalhe-opacity{
+        position: absolute;
+          height: 60%;
+          left: -15%;
+          bottom: 25%;
+      }
+
+      .main {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+          
+          flex-direction: column;
+          position: absolute;
+          display: flex;
+
+          font-size: 1vw;
+          width: 55%;
+      }
+
+      .f-box{
+        position: relative;
+          display: flex;
+      }
+
+      #f-box-a{
+          box-sizing: border-box;
+      }
+
+      .title{
+        background: rgb(230,54,110);
+        background: -moz-linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        background: -webkit-linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        background: linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e6366e",endColorstr="#6d4190",GradientType=1);
+
+        color: white;  
+
+        border-radius: 4em;
+          padding: 0.8em 2.4em;
+          box-sizing: border-box;
+          margin: 0em auto 2em;
+          font-size: 1.2em;
+      }
+
+      #f-box-b{    
+          box-sizing: border-box; 
+      }
+
+      .sub{
+        color: white;
+          text-align: center;
+          width: 100%;
+          font-size: 1.6em;
+          margin-bottom: 5em;
+      }
+
+      .logo-holder{
+          width: 100%;
+          text-align: center;
+          margin-top: 2.5em;
+      }
+
+      .logo-holder img{    
+        width: 13em;
+      }
+      
+      .line-bottom{
+        width: 100%;
+        height: 4px;
+        border-radius: 20px;
+
+        background: rgb(230,54,110);
+        background: -moz-linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        background: -webkit-linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        background: linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e6366e",endColorstr="#6d4190",GradientType=1);
+      }
+
+      #title-break{
+        display: none;
+      }
+
+      .form-holder{
+          background-color: white;
+          box-sizing: border-box;
+          padding: 2em 0.75em 1.2em;
+          color: #262626;
+          border-radius: 1.5em;
+          margin-left: 1.5em;
+          flex: 1 0 35%;
+          display: flex;
+          flex-direction: column;
+      }
+
+      .form-title{
+          display: block;
+      }
+
+      .form-title span{
+          font-size: 1.35em;
+          line-height: 1.6em;
+          vertical-align: middle;
+      }
+
+      .form-title i{
+          font-size: 1.75em;
+          margin-right: 0.5em;
+          vertical-align: middle;
+      }
+
+      .form-labels{
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: center;
+      }
+
+      .form-labels span{
+          width: 100%;
+      }
+
+      .form-inputs{
+            height: 80%;
+          width: 100%;
+          padding: 0.6em;
+          box-sizing: border-box;
+      }
+
+      .submit input{
+        -webkit-box-shadow: 0px 2px 9px 1px rgba(0,0,0,0.2);
+        -moz-box-shadow: 0px 2px 9px 1px rgba(0,0,0,0.2);
+        box-shadow: 0px 2px 9px 1px rgba(0,0,0,0.2);
+        border: 0;
+        padding: 0.5em 1em;
+        box-sizing: border-box;
+        border-radius: 1em;
+        flex: 1 0 0;
+        font-size: 0.73em;
+      }
+
+      .form-inputs textarea{
+        -webkit-box-shadow: 0px 2px 9px 1px rgba(0,0,0,0.2);
+        -moz-box-shadow: 0px 2px 9px 1px rgba(0,0,0,0.2);
+        box-shadow: 0px 2px 9px 1px rgba(0,0,0,0.2);
+          border: 0;
+            border-radius: 0.5em;
+      }
+
+      .form-inputs input, .submit input::placeholder {
+        color: lightgrey;
+      }
+
+      .form-inputs input, .submit input:-ms-input-placeholder {
+        color: lightgrey;
+      }
+
+      .form-inputs input, .submit input::-ms-input-placeholder {
+        color: lightgrey;
+      }
+      
+      .form-inputs input, .submit input, .submit button:focus {
+          outline: none;
+      }
+
+      form{
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+      }
+
+      form:focus {
+          outline: none;
+      }
+
+      .submit{
+        display: flex;
+        margin-top: 1.75em;
+      }
+
+      .submit button{
+        background: rgb(230,54,110);
+        background: -moz-linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        background: -webkit-linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        background: linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e6366e",endColorstr="#6d4190",GradientType=1);
+        border: 0;
+        border-radius: 1em;
+        color: white;
+        display: block;
+        cursor: pointer;
+        padding: 1em;
+        font-size: 0.8em;
+        margin-left: 0.5em;
+      }
+
+      .iframe-chat-container{
+          display: flex;
+      }
+
+      .iframe-container{
+          position: relative;
+          padding-bottom: 56.25%;
+          width: 100%;
+          flex: 1 0 100%;
+      }
+
+      iframe{
+          position: absolute;
+          top: 0;
+          width: 100%;
+          height: 100%;
+      }
+
+      #title-break{
+        display: none;
+      }
+
+      #lh-a{
+        display: block;
+      }
+
+      #lh-b{
+        display: none;
+      }
+
+      .message-holder{    
+        margin: 0.8em 0;
+      }
+
+      .message-holder .message{
+        display: flex;
+        flex-direction: column;
+      }
+
+      .message-holder .entrou{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .message-holder .entrou .connected-name, .message-holder .entrou .uconnected-name, .message-holder .message .message-name{
+        font-size: 0.6em;
+        font-weight: bold;
+        margin-bottom: 0.2em;
+      }
+
+      .message-holder .entrou .connected-text, .message-holder .entrou .uconnected-text{
+        font-size: 0.65em;
+      }
+
+      .message-text{
+        font-size: 0.8em;
+      }
+
+      #messages{
+        box-sizing: border-box;
+        overflow-y: scroll;
+        flex: 1 0 0;
+      }
+
+      @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait)  {
+        .main{
+            font-size: 0.85vw !important;
+        }
+      }
+
+      @media (min-width: 320px) and (max-width: 1024px) and (orientation: portrait)  {
+        .main{
+            flex-direction: column;
+            font-size: 1.2vw;
+            padding: 5em 0;
+            box-sizing: border-box;    
+            width: 100%;
+
+            top: 5%;
+            transform: translate(-50%, 0);
+        }
+
+        #f-box-a {
+            padding: 0 8em 4em 8em;
+        }
+
+        .title{
+          text-align: center;
+            font-size: 3em;
+            margin: 2.5em auto 1.2em;
+        }
+
+        #f-box-b{
+          padding: 0 8em;
+          flex-direction: row;
+            align-items: flex-start;
+        }
+
+        .logo-holder img{
+            width: 35%;
+        }
+
+        .sub{
+            font-size: 5.5em;
+            margin-bottom: 2em;
+        }
+
+        .line-bottom{
+            width: 80%;
+            margin: auto;
+        }
+
+        #title-break{
+          display: block;
+        }
+
+
+        .form-inputs input{
+            font-size: 2.2em;
+            line-height: 2.4em;
+            margin: 1em 0;
+        }
+
+        .submit input{
+          font-size: 2.2em;
+          margin: 1em auto;
+            flex: 1 0 80%;
+        }
+
+        .submit button i{
+            font-size: 2em;
+            padding: 1em 0;
+            flex: 1 0 15%;
+        }
+
+        .submit button{
+            flex: 1 0 19%;
+        }
+
+        .form-holder{
+          margin: 2.2em auto auto;
+        }
+
+        #detalhe-opacity{
+            right: 30%;
+        }
+
+        .iframe-chat-container{
+            flex-direction: column;
+            padding: 4em;
+        }
+
+        #lh-a{
+          display: none;
+        }
+
+        #lh-b{
+          display: block;
+        }
+      }
     </style>
+    
+    <script type="text/javascript">
+        function windowSize(){
+            var w = document.documentElement.clientWidth;
+            var h = document.documentElement.clientHeight;
+            if(w/h > 1.777999999){
+              $(".img-fundo" ).css("width", "100%");
+              $(".img-fundo" ).css( "height", "auto");
+            }else{
+              $( ".img-fundo" ).css( "height", "100%");
+              $( ".img-fundo" ).css( "width", "auto");
+            }
+        };
+        
+        window.addEventListener("load", windowSize);
+        window.addEventListener("resize", windowSize);
+    </script>
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.0.js"></script>
     <script>
-
       var _id = <%- JSON.stringify(id) %>;
-      var _fname = <%- JSON.stringify(fname) %>;
-      var _lname = <%- JSON.stringify(lname) %>;
+      var _name = <%- JSON.stringify(name) %>;
       var _email = <%- JSON.stringify(email) %>;
-  		
-      var socket = io(window.location.host, {query:'name='+_fname+" "+_lname+"&email="+_email});
+      var _company = <%- JSON.stringify(company) %>;
+      
+      var socket = io(window.location.host, {query:'name='+_name+"&email="+_email+"&company="+_company});
 
       socket.on('connect', () => {
         console.log(socket.id);
       });
       
-  		var msgs_sent = 0;
+      var msgs_sent = 0;
 
-    	$( document ).ready(function() {		
-		    $('form').submit(function(e) {
+      $( document ).ready(function() {    
+        $('form').submit(function(e) {
           e.preventDefault();
+          console.log("send message");
           msgs_sent++;
-          socket.emit('chat message', {user_id: usercode+"msg"+msgs_sent.toString(), user_name: _fname + " " + _lname, msg:$('#input_message').val()});
+          socket.emit('chat message',
+            {
+              user_id: _id+"msg"+msgs_sent.toString(), 
+              user_name: _name, 
+              user_company: _company, 
+              msg:$('#input_message').val()
+            });
+
           $('#input_message').val('');
           return false;
         });
-    	});
+      });
 
-    	
+      
       socket.on('chat history', function(data){
         for(var i = 0; i < data.ch.length; i++){
           if(isObject(data.ch[i])){
@@ -62,11 +508,11 @@
 
       socket.on('chat message', function(data){
         CreateMsgElement("message", data);
-    	});
+      });
 
-  		socket.on('user connected', function(data){
+      socket.on('user connected', function(data){
         CreateMsgElement("connected", data);
-    	});
+      });
 
       socket.on('user disconnected', function(data){
         CreateMsgElement("disconnected", data);
@@ -77,20 +523,6 @@
         return value && typeof value === 'object' && value.constructor === Object;
       }
 
-    	function GetUserCode(str){
-    		var code = "";
-    		for(var i = 0; i < str.length; i++){
-    			var n;
-    			if(i % 2 == 0){ 
-    				n = str.charCodeAt(i);
-    				code += n.toString();
-		   	}else{
-		   		code += str[i];
-		   	};
-    		}
-    		return code;
-    	}
-
       function CreateMsgElement(type, data){
         var c = document.createDocumentFragment();
         var div = document.createElement("div");
@@ -100,8 +532,9 @@
 
         switch(type) {
           case "message":
-              inner_div.className = data.user_id;
-              span_name.textContent = data.user_name;
+              inner_div.className = "message";
+              inner_div.id = data.user_id;
+              span_name.textContent = data.user_name+":";
               span_msg.textContent = data.msg;
             break;
           case "connected":
@@ -133,15 +566,46 @@
         div.appendChild(inner_div);
         c.appendChild(div);
         $('#messages').append(c);
+        $("#messages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 220);
       }
     </script>
-
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form action="">
-		<br>
-      	<input id="input_message"/><button>Send</button>
-    </form>
+    <img class="img-fundo" id="detalhe-normal" src="images/fundo_detalhe.jpg">
+    <img id="detalhe-opacity" src="images/fundo_detalhe_opacity.png">
+    <div class="main">
+      <div class="f-box" id="f-box-a">
+        <span class="title noto-bold">COOPER UP TRANSFORMA <br id="title-break">ONLINE - 20/05</span>
+      </div>
+      <div class="logo-holder" id="lh-b">
+        <img class="imgs" src="images/logo1.png">
+      </div>
+      <div class="iframe-chat-container">
+        <div class="iframe-container">
+          <iframe id="iframe" src="https://vocs.tv/transformaonline/embed.html" frameborder="0" autoplay; encrypted-media; allowfullscreen></iframe>
+        </div>
+
+        <div class="form-holder">
+          <div id="messages"></div>
+          <form name="form" class="submit" action="" method="post" tabindex="1">
+            <input class="noto-bold" id="input_message" type="text" name="msg" placeholder="mensagem" required/>
+            <button id="enviar" ><i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+
+        <div class="logo-holder" id="lh-a">
+          <img class="imgs" src="images/logo1.png">
+        </div>
+      </div>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+

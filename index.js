@@ -41,7 +41,7 @@ http.listen(process.env.PORT || 8080, () => {
 });
 
 var chat_history = [];
-var current_users = [];
+//var current_users = [];
 
 let statusInput;
 let tokenInput;
@@ -67,7 +67,7 @@ io.on('connect', (socket) => {
   //ADD NAME LOGGED IN TO CHAT HISTORY
   AddToChatHistory(socket.handshake.query.name);
 
-  current_users.push({"id":socket.id, "name":socket.handshake.query.name, "email":socket.handshake.query.email});
+  //current_users.push({"id":socket.id, "name":socket.handshake.query.name, "email":socket.handshake.query.email});
   
   socket.on('chat message', (data) => {
     //ADD MSG LOGGED IN TO CHAT HISTORY
@@ -77,9 +77,9 @@ io.on('connect', (socket) => {
 
   socket.on('disconnect', (reason) => {
     console.log(socket.id+' disconnected');
-    console.log(current_users);
-    var index = current_users.findIndex(x => x.id === socket.id);
-    socket.broadcast.emit('user disconnected', current_users[index].name);
+    //console.log(current_users);
+    //var index = current_users.findIndex(x => x.id === socket.id);
+    //socket.broadcast.emit('user disconnected', current_users[index].name);
    // current_users.splice(index);
   });
 });
@@ -125,7 +125,7 @@ app.post('/', (req,res) => {
 });
 
 app.post('/login', (req,res) => {
-  const {email} = req.body;
+  const {email, name, password} = req.body;
   connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
     if (error) {
       res.send({
@@ -133,14 +133,17 @@ app.post('/login', (req,res) => {
         "failed":"error ocurred"
       })
     }else{
-      if(results.length >0){
-        console.log(results);
+      if(results.length >0 && password == "transforma1"){
         res.render("chat", results[0]);
-      }
-      else{
+      }else if(password != "transforma1"){
         res.send({
-          "code":206,
-          "success":"Email does not exits"
+          "code":401,
+          "success":"Wrong password"
+        });
+      }else{
+        res.send({
+          "code":401,
+          "success":"User unknown"
         });
       }
     }
@@ -148,15 +151,24 @@ app.post('/login', (req,res) => {
 });
 
 /////////////
-
-// var latest_user;
-// app.post("/chat-room", (req, res) => {
-//   latest_user = req.body.fname + " " + req.body.lname;
-//   res.render("chat", req.body);
-// });
-
 ///
 function AddToChatHistory(e){
     chat_history.push(e);
     if(chat_history.length > 199){chat_history.splice(0)};
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
