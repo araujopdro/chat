@@ -74,15 +74,17 @@ io.on('connect', (socket) => {
   
   socket.on('chat message', (data) => {
     //ADD MSG LOGGED IN TO CHAT HISTORY
-    var chat_history = [];
+    AddToChatHistory(data);
     io.emit('chat message', data);
   });
 
+  socket.on('kill all', (data) => {
+    io.emit('kill all');
+  });
 
   socket.on('clear chat', (data) => {
-    //ADD MSG LOGGED IN TO CHAT HISTORY
     chat_history = [];
-    io.emit('clear chat');
+    io.emit('chat message', data);
   });
 
 

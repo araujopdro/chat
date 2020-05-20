@@ -569,6 +569,11 @@
         limparChat();
       });
 
+      socket.on('kill all', function(data){
+        xhttp.open("GET", "/", true);
+        xhttp.send();
+      });
+
       socket.on('user connected', function(data){
         CreateMsgElement("connected", data);
       });

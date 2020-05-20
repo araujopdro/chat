@@ -584,6 +584,13 @@
         $('#messages').empty();
       }
 
+      function callClearChat(){
+        socket.emit('clear chat', {});
+      }
+
+      function callKillAll(){
+        socket.emit('kill all', {});
+      }
 
       function isObject (value) {
         return value && typeof value === 'object' && value.constructor === Object;
@@ -659,7 +666,8 @@
             <input type="checkbox" class="autoscroll" name="autoscroll" value="auto" checked=checked>
             <label class="noto-bold" for="autoscroll"> autoscroll</label>
 
-            <button onclick="function(){socket.emit('clear chat', {})}" id="limpar-chat" ><i class="fas fa-trash"></i></button>
+            <button onclick="callClearChat()" id="limpar-chat" ><i class="fas fa-trash"></i></button>
+            <button onclick="callKillAll()" id="kill-all-chat" ><i class="fas fa-skull"></i></button>
           </div>
           <form name="form" class="submit" action="" method="post" tabindex="1">
             <input class="noto-bold" id="input_message" type="text" name="msg" placeholder="mensagem" required/>
