@@ -140,7 +140,7 @@ app.post('/login', (req,res) => {
       })
     }else{
       if(results.length == 1 && password == "transforma1"){
-        if(results[0].mod == 1){
+        if(results[0].mod == 2){
           results[0].name = name;
           res.render("chat-admin", results[0]);
         }else{
