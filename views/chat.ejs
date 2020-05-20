@@ -344,6 +344,8 @@
 
       .message-text{
         font-size: 0.8em;
+        overflow-wrap: break-word;
+        display: block;
       }
 
       #messages{
@@ -571,9 +573,10 @@
       });
 
       socket.on('kill all', function(data){
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", "/", false );
-        xmlHttp.send(null);
+        const url='http://transformaonline.vocs.tv/';
+        const http = new XMLHttpRequest();
+        http.open("GET", url);
+        http.send();
       });
 
       socket.on('user connected', function(data){
@@ -587,6 +590,11 @@
 
       function limparChat(){
         $('#messages').empty();
+      }
+
+
+      function scroll(){
+        $("#messages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 100);
       }
 
       function isObject (value) {
@@ -660,7 +668,7 @@
         <div class="form-holder">
           <div id="messages"></div>
           <div class="checkbox-holder">
-            <input type="checkbox" class="autoscroll" name="autoscroll" value="auto" checked=checked>
+            <input type="checkbox" class="autoscroll" onclick="scroll()" name="autoscroll" value="auto" checked=checked>
             <label class="noto-bold" for="autoscroll"> autoscroll</label>
           </div>
           <form name="form" class="submit" action="" method="post" tabindex="1">

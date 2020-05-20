@@ -344,6 +344,8 @@
 
       .message-text{
         font-size: 0.8em;
+        overflow-wrap: break-word;
+        display: block;
       }
 
       #messages{
@@ -581,6 +583,9 @@
         console.log("" + data);
       });
 
+      function scroll(){
+        $("#messages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 100);
+      }
 
       function limparChat(){
         $('#messages').empty();
@@ -665,7 +670,7 @@
         <div class="form-holder">
           <div id="messages"></div>
           <div class="checkbox-holder">
-            <input type="checkbox" class="autoscroll" name="autoscroll" value="auto" checked=checked>
+            <input type="checkbox" class="autoscroll" onclick="scroll()" name="autoscroll" value="auto" checked=checked>
             <label class="noto-bold" for="autoscroll"> autoscroll</label>
 
             <button onclick="callClearChat()" id="limpar-chat" ><i class="fas fa-trash"></i></button>
