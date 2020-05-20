@@ -62,12 +62,12 @@ io.on('connect', (socket) => {
   var user = socket.handshake.query;
 
   if(user.moderator != 2){
-    socket.broadcast.emit('user connected', user.name);
+    //socket.broadcast.emit('user connected', user.name);
   }
   
   io.to(socket.id).emit('chat history', {ch: chat_history});
 
-  if(user.moderator != 2){
+  if(user.moderator != 2 && ){
     AddToChatHistory(socket.handshake.query.name);
   }
   current_users.push(user);
