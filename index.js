@@ -102,7 +102,7 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/', (req,res) => {
-  const {id, fname, lname, email} = req.body;
+  const {id, name, company, email} = req.body;
   connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
     if (error) {
       res.send({
@@ -117,7 +117,7 @@ app.post('/', (req,res) => {
         });
       }
       else{
-        connection.query('INSERT INTO users SET ?',{id, fname, lname, email}, function (error, results, fields) {
+        connection.query('INSERT INTO users SET ?',{id, name, company, email}, function (error, results, fields) {
           if (error) {
             console.log(error)
           } else {
@@ -132,36 +132,34 @@ app.post('/', (req,res) => {
 app.post('/login', (req,res) => {
   const {email, name, password} = req.body;
 
-  res.render("chat-admin", {id:0, name:"pedro", email:"teste.teste.com", company:"asokm", mod: 0});
-
-  // connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
-  //   if (error) {
-  //     res.send({
-  //       "code":400,
-  //       "failed":"error ocurred"
-  //     })
-  //   }else{
-  //     if(results.length == 1 && password == "transforma1"){
-  //       if(results[0].mod == 1){
-  //         results[0].name = name;
-  //         res.render("chat-admin", results[0]);
-  //       }else{
-  //         results[0].name = name;
-  //         res.render("chat", results[0]);
-  //       }
-  //     }else if(password != "transforma1"){
-  //       res.send({
-  //         "code":401,
-  //         "success":"Wrong password"
-  //       });
-  //     }else{
-  //       res.send({
-  //         "code":401,
-  //         "success":"User unknown"
-  //       });
-  //     }
-  //   }
-  // });
+  connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
+    if (error) {
+      res.send({
+        "code":400,
+        "failed":"error ocurred"
+      })
+    }else{
+      if(results.length == 1 && password == "transforma1"){
+        if(results[0].mod == 1){
+          results[0].name = name;
+          res.render("chat-admin", results[0]);
+        }else{
+          results[0].name = name;
+          res.render("chat", results[0]);
+        }
+      }else if(password != "transforma1"){
+        res.send({
+          "code":401,
+          "success":"Wrong password"
+        });
+      }else{
+        res.send({
+          "code":401,
+          "success":"User unknown"
+        });
+      }
+    }
+  });
 });
 
 /////////////
