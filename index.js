@@ -84,7 +84,7 @@ io.on('connect', (socket) => {
 
   socket.on('clear chat', (data) => {
     chat_history = [];
-    io.emit('chat message', data);
+    io.emit('clear chat');
   });
 
 
