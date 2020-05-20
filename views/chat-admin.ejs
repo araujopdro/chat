@@ -99,6 +99,7 @@
         font-size: 1vw;
         margin: auto;
         width: 55%;
+        z-index: 1;
       }
 
       .f-box{
@@ -174,7 +175,7 @@
         flex: 1 0 35%;
         display: flex;
         flex-direction: column;
-         z-index: 1;
+        z-index: 1;
       }
 
       .form-title{
@@ -317,7 +318,7 @@
       }
 
       .message-holder{    
-        margin: 0.8em 0;
+        margin: 1.15em 0;
       }
 
       .message-holder .message{
@@ -334,7 +335,6 @@
       .message-holder .entrou .connected-name, .message-holder .entrou .uconnected-name, .message-holder .message .message-name{
         font-size: 0.6em;
         font-weight: bold;
-        margin-bottom: 0.2em;
         text-transform: uppercase;
       }
 
@@ -358,7 +358,39 @@
 
       @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait)  {
         .main{
-            font-size: 0.85vw !important;
+          font-size: 0.85vw !important;
+          width: 80% !important;
+        }
+
+        #messages{
+          flex: 1;
+          font-size: 2.5em;
+          max-height: 28vh !important;
+        }
+
+        .form-holder{
+          flex: 1;
+          margin: 4em 0 0 !important;
+        }
+
+        .title {
+          font-size: 2em !important;
+        }
+
+        .submit input {
+          font-size: 2.2em;
+          margin: auto !important;
+          flex: 1;
+        }
+
+        .submit button {
+          margin: auto !important;
+          flex: 0 !important;
+          padding: 1em 3em;
+        }
+
+        .checkbox-holder{
+          font-size: 2.5em;
         }
       }
 
@@ -369,9 +401,6 @@
             padding: 5em 0;
             box-sizing: border-box;    
             width: 100%;
-
-            top: 5%;
-            transform: translate(-50%, 0);
         }
 
         #f-box-a {
@@ -380,8 +409,8 @@
 
         .title{
           text-align: center;
-            font-size: 3em;
-            margin: 2.5em auto 1.2em;
+          font-size: 3em;
+          margin: 2.5em auto 1.2em;
         }
 
         #f-box-b{
@@ -415,24 +444,39 @@
             margin: 1em 0;
         }
 
-        .submit input{
-          font-size: 2.2em;
-          margin: 1em auto;
-            flex: 1 0 80%;
-        }
-
         .submit button i{
             font-size: 2em;
             padding: 1em 0;
             flex: 1 0 15%;
         }
 
-        .submit button{
-            flex: 1 0 19%;
+
+        .submit input {
+          font-size: 2.2em;
+          margin: auto;
+          flex: 1;
         }
 
+        .submit button {
+          margin: auto;
+          flex: 0;
+          padding: 1em 3em;
+        }
+
+        .checkbox-holder{
+          font-size: 2.5em;
+        }
+
+
         .form-holder{
-          margin: 2.2em auto auto;
+          flex: 1;
+          margin: 2.2em 0 0;
+        }
+
+        #messages{
+          flex: 1;
+          font-size: 3.3em;
+          max-height: 28vh;
         }
 
         #detalhe-opacity{
