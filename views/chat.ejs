@@ -582,6 +582,10 @@
         CreateMsgElement("disconnected", data);
         console.log("" + data);
       });
+      
+      function limparChat(){
+        $('#messages').empty();
+      }
 
       function isObject (value) {
         return value && typeof value === 'object' && value.constructor === Object;
