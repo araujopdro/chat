@@ -105,11 +105,11 @@ app.get('/usuarios_logados', (req, res) => {
   console.log("ul")
   let result = '<table>';
   for(var i = 0; i < current_users.length; i++){
-    result += "<tr>" + current_users[i] + "</tr>";
+    result += "<tr>" + current_users[i].name + "</tr>";
   }
   result += '</table>';
   console.log(result)
-  res.send(result);
+  res.send(current_users);
 });
 
 app.get('*', (req, res) => {
