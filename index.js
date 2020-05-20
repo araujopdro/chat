@@ -41,7 +41,8 @@ http.listen(process.env.PORT || 8080, () => {
 });
 
 var chat_history = [];
-//var current_users = [];
+var current_users = [];
+var current_mods = [];
 
 let statusInput;
 let tokenInput;
@@ -59,15 +60,17 @@ app.use(express.static(__dirname + '/public'));
 
 
 io.on('connect', (socket) => {
-  console.log(socket.id + " " + socket.handshake.query.name +' connected');
-  console.log(socket.id + " " + socket.handshake.query.email +' connected');
-
   socket.broadcast.emit('user connected', socket.handshake.query.name);
   io.to(socket.id).emit('chat history', {ch: chat_history});
   //ADD NAME LOGGED IN TO CHAT HISTORY
   AddToChatHistory(socket.handshake.query.name);
 
-  //current_users.push({"id":socket.id, "name":socket.handshake.query.name, "email":socket.handshake.query.email});
+  if(socket.handshake.query.mod == 1){
+    current_users.push({"id":socket.id, "name":socket.handshake.query.name, "email":socket.handshake.query.email});
+  }
+  else{
+    current_mods.push({"id":socket.id, "name":socket.handshake.query.name, "email":socket.handshake.query.email});
+  }
   
   socket.on('chat message', (data) => {
     //ADD MSG LOGGED IN TO CHAT HISTORY
@@ -77,11 +80,13 @@ io.on('connect', (socket) => {
 
   socket.on('disconnect', (reason) => {
     console.log(socket.id+' disconnected');
-    //console.log(current_users);
-    //var index = current_users.findIndex(x => x.id === socket.id);
+    var index = current_users.findIndex(x => x.id === socket.id);
     //socket.broadcast.emit('user disconnected', current_users[index].name);
-   // current_users.splice(index);
+    current_users.splice(index);
   });
+
+  console.log(current_users);
+  console.log(current_mods);
 });
 
 ///
@@ -133,8 +138,14 @@ app.post('/login', (req,res) => {
         "failed":"error ocurred"
       })
     }else{
-      if(results.length >0 && password == "transforma1"){
-        res.render("chat", results[0]);
+      if(results.length == 1 && password == "transforma1"){
+        if(results[0].mod == 1){
+          results[0].name = name;
+          res.render("chat-admin", results[0]);
+        }else{
+          results[0].name = name;
+          res.render("chat", results[0]);
+        }
       }else if(password != "transforma1"){
         res.send({
           "code":401,
