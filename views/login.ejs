@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>UPL</title>
+    <title>Vivaz</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script src="https://kit.fontawesome.com/3f043c6910.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+
 
 
     <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
@@ -141,8 +142,10 @@
       }
 
       .logo-holder{
-          width: 100%;
-          text-align: center;
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          margin: 3em;
       }
 
       .logo-holder img{    
@@ -420,31 +423,23 @@
     </script>
   </head>
   <body>
-    <img class="img-fundo" id="detalhe-normal" src="images/fundo_detalhe.jpg">
-    <img id="detalhe-opacity" src="images/fundo_detalhe_opacity.png">
+    <img class="img-fundo" id="detalhe-normal" src="images/fundo.jpg">
+    <div class="logo-holder">
+      <img src="images/logo.png">
+    </div>
     <div class="main">
-        <div class="logo-holder">
-          <img class="imgs" src="images/logo0.png">
-        </div>
-        <div class="f-box" id="f-box-a">
-          <span class="title noto-bold">COOPER UP TRANSFORMA <br id="title-break">ONLINE - 20/05</span>
-        </div>
-        <div class="form-pos-holder">
-        <hr><br>
-        <h1>Cadastro realizado com sucesso. <i class="fas fa-check-circle"></i></h1>
-        <span>Você será redirecionado para o site da Raízen</span>
-        <br><br><br><br><br><hr>
-      </div>
         <div class="form-holder">
+          <h2>Entre com o email cadastrado:</h2>
           <form class="form" action="/login" method="POST" tabindex="1">
             <div class="form-inputs">
                 <input class="noto-bold" type="email" name="email" placeholder="e-mail" required/>
-                <!--<input class="noto-bold" type="text" name="name" placeholder="nome" required/>-->
               </div>
               <div class="submit"><input id="enviar" type="submit" name="sent" value="ENTRAR"></div>
           </form>
         </div>
-        <div class="line-bottom"></div>
+
+        
+    <script>(function(t,e,s,n){var o,a,c;t.SMCX=t.SMCX||[],e.getElementById(n)||(o=e.getElementsByTagName(s),a=o[o.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=n,c.src="https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd8dLY_2BMjzh8x09GgM_2FsCwPS4MIo3THTSCwWr7p442aJm.js",a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");</script><a style="font: 12px Helvetica, sans-serif; color: #999; text-decoration: none;" href=pt.surveymonkey.com> Crie seu próprio questionário de feedback de usuário </a>
     </div>
   </body>
 </html>

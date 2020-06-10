@@ -140,13 +140,14 @@
       }
 
       .logo-holder{
-          width: 100%;
-          text-align: center;
-          margin-top: 2.5em;
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          margin: 0.1em 0.5em 0 0;
       }
 
       .logo-holder img{    
-        width: 13em;
+        width: 9em;
       }
       
       .line-bottom{
@@ -425,10 +426,6 @@
             align-items: flex-start;
         }
 
-        .logo-holder img{
-            width: 35%;
-        }
-
         .sub{
             font-size: 5.5em;
             margin-bottom: 2em;
@@ -524,12 +521,8 @@
     <script src="https://cdn.socket.io/socket.io-1.4.0.js"></script>
     <script>
       var _id = <%- JSON.stringify(id) %>;
-      var _name = <%- JSON.stringify(name) %>;
+      var _name = <%- JSON.stringify(nome) %>;
       var _email = <%- JSON.stringify(email) %>;
-      
-      console.log(_id);
-      console.log(_name);
-      console.log(_email);
 
       var socket = io(window.location.host, {query:'name='+_name+"&email="+_email+"&id="+_id, transports: ['websocket']});
 
@@ -663,14 +656,12 @@
     </script>
   </head>
   <body>
-    <img class="img-fundo" id="detalhe-normal" src="images/fundo_detalhe.jpg">
-    <img id="detalhe-opacity" src="images/fundo_detalhe_opacity.png">
+    <img class="img-fundo" id="detalhe-normal" src="images/fundo.jpg">
+    <div class="logo-holder">
+      <img src="images/logo.png">
+    </div>
     <div class="main">
       <div class="f-box" id="f-box-a">
-        <span class="title noto-bold">COOPER UP TRANSFORMA <br id="title-break">ONLINE - 20/05</span>
-      </div>
-      <div class="logo-holder" id="lh-b">
-        <img class="imgs" src="images/logo1.png">
       </div>
       <div class="iframe-chat-container">
         <div class="iframe-container">
@@ -686,10 +677,6 @@
             <input class="noto-bold" id="input_message" type="text" name="msg" placeholder="mensagem" required/>
             <button id="enviar" ><i class="fas fa-paper-plane"></i></button>
           </form>
-        </div>
-
-        <div class="logo-holder" id="lh-a">
-          <img class="imgs" src="images/logo1.png">
         </div>
       </div>
   </body>

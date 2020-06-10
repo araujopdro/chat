@@ -60,8 +60,12 @@ app.use(express.static(__dirname + '/public'));
 
 io.on('connect', (socket) => {
   var user = socket.handshake.query;
-
   io.to(socket.id).emit('chat history', {ch: chat_history});
+
+  current_users.push({
+    "id": user.id,
+    "socket_id": socket.id
+  });
 
   socket.on('chat message', (data) => {
     //ADD MSG LOGGED IN TO CHAT HISTORY
@@ -80,13 +84,11 @@ io.on('connect', (socket) => {
 
 
   socket.on('disconnect', (reason) => {
-    console.log(socket.id+' disconnected');
-    var index = current_users.findIndex(x => x.id === socket.id);
+    var index = current_users.findIndex(x => x.socket_id === socket.id);
+    console.log("disconnected: "+socket.id)
     //socket.broadcast.emit('user disconnected', current_users[index].name);
     current_users.splice(index);
   });
-
-  console.log(current_users);
 });
 
 ///
@@ -97,32 +99,43 @@ app.get('/', (req,res) => {
 
 ///
 app.post('/login', (req,res) => {
-  const {email} = req.body;
+  const email = req.body.email.toUpperCase();
   let date = new Date();
   var user;
-  connection.query('SELECT * FROM vivaz WHERE email = ?',[email], async function (error, results, fields) {
+  connection.query('SELECT * FROM vivaz WHERE UPPER(email) = ?',[email], async function (error, results, fields) {
     if (error) {
       res.send({
         "code":400,
         "failed":"error ocurred"
       })
     }else{
-      console.log("achou o email q a pessoa digitou pra entrar");
-      if(results.length == 1){
+      if(results.length > 0){
         user = results[0]; 
-        connection.query('UPDATE vivaz SET data = ? WHERE id = ?', [date, user.id], async function (error, results, fields) {
-          if (error) {
-            res.send({
-              "code":400,
-              "failed":"error ocurred"
-            })
-          }else{
-            console.log("loggado e data registrada");
-            res.render("chat", user);
-          } 
-        });
+        var index = -1;
+        console.log("cur length: "+current_users.length);
+        for(var i = 0; i < current_users.length; i++){
+          console.log("cur id: "+current_users[i].id);
+          console.log("user id: "+user.id);
+          if(current_users[i].id == user.id.toString()){
+            index = i;
+          }
+        }
+        console.log("index: "+index);
+        if(index == -1){
+          connection.query('UPDATE vivaz SET data = ? WHERE id = ?', [date, user.id], async function (error, results, fields) {
+            if (error) {
+              res.send({
+                "code":400,
+                "failed":"error ocurred"
+              })
+            }else{
+              res.render("chat", user);
+            } 
+          });
+        }else{
+          res.render("login_user");
+        }
       }else{
-        console.log("usuario n passou");
         res.render("login_user");
       }
     }
