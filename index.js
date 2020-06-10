@@ -73,8 +73,8 @@ io.on('connect', (socket) => {
     io.emit('chat message', data);
   });
 
-  socket.on('kill all', (data) => {
-    io.emit('kill all');
+  socket.on('show modal', (data) => {
+    io.emit('show modal');
   });
 
   socket.on('clear chat', (data) => {
@@ -129,7 +129,11 @@ app.post('/login', (req,res) => {
                 "failed":"error ocurred"
               })
             }else{
-              res.render("chat", user);
+              if(user.email == "admin@vocs.tv"){
+                res.render("chat-admin", user);
+              }else{
+                res.render("chat", user);
+              }
             } 
           });
         }else{

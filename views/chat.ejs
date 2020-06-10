@@ -360,6 +360,33 @@
         padding-left: 0.8em;
       }
 
+      .modal{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        display: none;
+        flex-direction: column;
+        z-index: 1;
+        background-color: rgba(0,0,0,0.5);
+      }
+
+      .modal div{
+        margin: 0 auto auto; 
+      }
+
+      #close-div{
+        margin: auto auto 0 !important;
+        text-align: right;
+        width: 100%;
+        max-width: 640px;
+      }
+
+      #close{
+        font-weight: bold;
+        margin: 5px;
+        cursor: pointer;
+      }
+
       @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait)  {
         .main{
           font-size: 0.85vw !important;
@@ -547,10 +574,16 @@
           $('#input_message').val('');
           return false;
         });
+
+
         $('#chkbx').change(function() {
             if(this.checked) {
               $("#messages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 220);
             }     
+        });
+
+        $("#close").click(function(){
+          $(".modal").hide();
         });
       });
 
@@ -590,6 +623,13 @@
         CreateMsgElement("disconnected", data);
         console.log("" + data);
       });
+
+
+
+      socket.on('show modal', function(data){
+        $('.modal').css('display', 'flex');
+      });
+
 
       function limparChat(){
         $('#messages').empty();
@@ -669,25 +709,20 @@
         </div>
         <div class="form-holder">
           <div id="messages"></div>
-          <div class="checkbox-holder">
-            <input type="checkbox" class="autoscroll" id="chkbx" onclick="scroll()" name="autoscroll" value="auto" checked=checked>
-            <label class="noto-bold" for="autoscroll"> autoscroll</label>
-          </div>
-          <form name="form" class="submit" action="" method="post" tabindex="1">
-            <input class="noto-bold" id="input_message" type="text" name="msg" placeholder="mensagem" required/>
-            <button id="enviar" ><i class="fas fa-paper-plane"></i></button>
-          </form>
+            <div class="checkbox-holder">
+              <input type="checkbox" class="autoscroll" id="chkbx" onclick="scroll()" name="autoscroll" value="auto" checked=checked>
+              <label class="noto-bold" for="autoscroll"> autoscroll</label>
+            </div>
+            <form name="form" class="submit" action="" method="post" tabindex="1">
+              <input class="noto-bold" id="input_message" type="text" name="msg" placeholder="mensagem" required/>
+              <button id="enviar" ><i class="fas fa-paper-plane"></i></button>
+            </form>
         </div>
       </div>
+    </div>
+    <div class="modal">
+        <div id="close-div"><span id="close">X</span></div>
+        <script>(function(t,e,s,n){var o,a,c;t.SMCX=t.SMCX||[],e.getElementById(n)||(o=e.getElementsByTagName(s),a=o[o.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=n,c.src="https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd8dLY_2BMjzh8x09GgM_2FsCwPRwgcKePL42ErOuQiF5R5oY.js",a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");</script>
+    </div>
   </body>
 </html>
-
-
-
-
-
-
-
-
-
-
