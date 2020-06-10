@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>UPL</title>
+    <title>Vivaz</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script src="https://kit.fontawesome.com/3f043c6910.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
@@ -526,11 +526,12 @@
       var _id = <%- JSON.stringify(id) %>;
       var _name = <%- JSON.stringify(name) %>;
       var _email = <%- JSON.stringify(email) %>;
-      var _company = <%- JSON.stringify(company) %>;
-      var _logged = <%- JSON.stringify(logged) %>;
-      var _moderator = <%- JSON.stringify(moderator) %>;
+      
+      console.log(_id);
+      console.log(_name);
+      console.log(_email);
 
-      var socket = io(window.location.host, {query:'name='+_name+"&email="+_email+"&company="+_company+"&moderator="+_moderator+"&logged="+_logged, transports: ['websocket']});
+      var socket = io(window.location.host, {query:'name='+_name+"&email="+_email+"&id="+_id, transports: ['websocket']});
 
       socket.on('connect', () => {
         console.log(socket.id);
@@ -547,7 +548,6 @@
             {
               user_id: _id+"msg"+msgs_sent.toString(), 
               user_name: _name, 
-              user_company: _company, 
               msg:$('#input_message').val()
             });
 

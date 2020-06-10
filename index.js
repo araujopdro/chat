@@ -12,7 +12,7 @@ const bodyParser = require('body-parser');
 /////////////////
 
 var servidor = '177.38.44.3';
-var nomeBanco = 'chat';
+var nomeBanco = 'vivaz';
 var usuario = 'pedro';
 var senha = 'oxehHa3N';
 
@@ -61,16 +61,7 @@ app.use(express.static(__dirname + '/public'));
 io.on('connect', (socket) => {
   var user = socket.handshake.query;
 
-  if(user.moderator != 2){
-    //socket.broadcast.emit('user connected', user.name);
-  }
-  
   io.to(socket.id).emit('chat history', {ch: chat_history});
-
-  if(user.moderator != 2){
-    //AddToChatHistory(socket.handshake.query.name);
-  }
-  current_users.push(user);
 
   socket.on('chat message', (data) => {
     //ADD MSG LOGGED IN TO CHAT HISTORY
@@ -100,55 +91,14 @@ io.on('connect', (socket) => {
 
 ///
 
-///
-app.get('/usuarios_logados', (req, res) => {
-  console.log("ul")
-  let result = '<table>';
-  for(var i = 0; i < current_users.length; i++){
-    result += "<tr>" + current_users[i].name + "</tr>";
-  }
-  result += '</table>';
-  console.log(result)
-  res.send(current_users);
-});
-
-app.get('*', (req, res) => {
+app.get('/', (req,res) => {
   res.render("login");
 });
 
-
-
-
-app.post('/', (req,res) => {
-  const {id, name, company, email} = req.body;
-  connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
-    if (error) {
-      res.send({
-        "code":400,
-        "failed":"error ocurred"
-      })
-    }else{
-      if(results.length >0){
-        res.send({
-          "code":403,
-          "failed":"error ocurred"
-        });
-      }
-      else{
-        connection.query('INSERT INTO users SET ?',{id, name, company, email}, function (error, results, fields) {
-          if (error) {
-            console.log(error)
-          } else {
-              res.render("login");
-            }
-        });
-      }
-    }
-  });  
-});
-
+///
 app.post('/login', (req,res) => {
-  const {email, password} = req.body;
+  const {email} = req.body;
+  let date = new Date();
   var user;
   connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
     if (error) {
@@ -157,54 +107,20 @@ app.post('/login', (req,res) => {
         "failed":"error ocurred"
       })
     }else{
+      console.log("achou o email q a pessoa digitou pra entrar");
       if(results.length == 1){
-        user = results[0];
-        var found = false;
-        for(var i = 0; i < current_users.length; i++) {
-            if (current_users[i].email == user.email) {
-                found = true;
-                break;
-            }
-        }
-          
-        if(user.password == password){
-          //connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
-          connection.query('UPDATE users SET logged = ? WHERE id = ?', [1, user.id], async function (error, results, fields) {
-            if (error) {
-              res.send({
-                "code":400,
-                "failed":"error ocurred"
-              })
-            }
-            else{
-              console.log("loggado");
-              if(user.moderator == 2){
-                user.logged = 1;
-                res.render("chat-admin", user);
-              }else if(user.moderator == 4){
-                console.log("super user")
-                var _logged = 0;
-                connection.query('SELECT * FROM users WHERE moderator = ?',[0], async function (error, results, fields) {
-                   if (error) {
-                    console.log(error)
-                      res.send({
-                        "code":400,
-                        "failed":"error ocurred"
-                      })
-                  }else{
-                    res.render("report", {data: results});
-                  }
-                });
-              }else{
-                user.logged = 1;
-                res.render("chat", user);
-              }
-            } 
-          });
-        }else{
-          console.log("errou a senha");
-          res.render("login_pass");
-        }
+        user = results[0]; 
+        connection.query('UPDATE users SET data = ? WHERE id = ?', [date, user.id], async function (error, results, fields) {
+          if (error) {
+            res.send({
+              "code":400,
+              "failed":"error ocurred"
+            })
+          }else{
+            console.log("loggado e data registrada");
+            res.render("chat", user);
+          } 
+        });
       }else{
         console.log("usuario n passou");
         res.render("login_user");
@@ -219,7 +135,6 @@ function AddToChatHistory(e){
     chat_history.push(e);
     if(chat_history.length > 199){chat_history.splice(0)};
 }
-
 
 
 
