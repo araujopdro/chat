@@ -104,7 +104,7 @@ app.post('/login', (req,res) => {
     if (error) {
       res.send({
         "code":400,
-        "failed":"error ocurred "
+        "failed":"error ocurred"
       })
     }else{
       console.log("achou o email q a pessoa digitou pra entrar");
@@ -114,7 +114,7 @@ app.post('/login', (req,res) => {
           if (error) {
             res.send({
               "code":400,
-              "failed":"error ocurred "
+              "failed":"error ocurred"
             })
           }else{
             console.log("loggado e data registrada");
