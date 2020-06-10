@@ -100,7 +100,7 @@ app.post('/login', (req,res) => {
   const {email} = req.body;
   let date = new Date();
   var user;
-  connection.query('SELECT * FROM users WHERE email = ?',[email], async function (error, results, fields) {
+  connection.query('SELECT * FROM vivaz WHERE email = ?',[email], async function (error, results, fields) {
     if (error) {
       res.send({
         "code":400,
@@ -110,7 +110,7 @@ app.post('/login', (req,res) => {
       console.log("achou o email q a pessoa digitou pra entrar");
       if(results.length == 1){
         user = results[0]; 
-        connection.query('UPDATE users SET data = ? WHERE id = ?', [date, user.id], async function (error, results, fields) {
+        connection.query('UPDATE vivaz SET data = ? WHERE id = ?', [date, user.id], async function (error, results, fields) {
           if (error) {
             res.send({
               "code":400,
