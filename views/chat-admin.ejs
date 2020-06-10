@@ -599,10 +599,12 @@
         socket.emit('kill all', {});
       }
 
-
-
       function callShowModal(){
         socket.emit('show modal', {});
+      }
+
+      function callShowDownload(){
+        socket.emit('show download', {});
       }
 
       function isObject (value) {
@@ -680,6 +682,7 @@
             <button onclick="callClearChat()" id="limpar-chat" ><i class="fas fa-trash"></i></button>
             <button onclick="callKillAll()" id="kill-all-chat" ><i class="fas fa-skull"></i></button>
             <button onclick="callShowModal()" id="kill-all-chat" ><i class="far fa-window-restore"></i></button>
+            <button onclick="callShowDownload()" id="kill-all-chat" ><i class="fas fa-download"></i></button>
           </div>
           <form name="form" class="submit" action="" method="post" tabindex="1">
             <input class="noto-bold" id="input_message" type="text" name="msg" placeholder="mensagem" required/>

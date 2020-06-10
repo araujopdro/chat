@@ -387,6 +387,16 @@
         cursor: pointer;
       }
 
+      #btn-download{
+        display: none;
+        text-align: center;
+      }
+
+      #btn-download{
+        width: 14em;
+        margin: 1em;
+      }
+
       @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait)  {
         .main{
           font-size: 0.85vw !important;
@@ -626,6 +636,10 @@
 
 
 
+      socket.on('show download', function(data){
+        $('#btn-download').css('display', 'block');
+      });
+
       socket.on('show modal', function(data){
         $('.modal').css('display', 'flex');
       });
@@ -701,7 +715,8 @@
       <img src="images/logo.png">
     </div>
     <div class="main">
-      <div class="f-box" id="f-box-a">
+      <div id="btn-download">
+        <a href="#"><img src="images/btn-download.png"></a>
       </div>
       <div class="iframe-chat-container">
         <div class="iframe-container">

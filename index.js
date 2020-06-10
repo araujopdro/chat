@@ -77,6 +77,10 @@ io.on('connect', (socket) => {
     io.emit('show modal');
   });
 
+  socket.on('show download', (data) => {
+    io.emit('show download');
+  });
+
   socket.on('clear chat', (data) => {
     chat_history = [];
     io.emit('clear chat');
