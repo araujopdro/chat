@@ -102,11 +102,16 @@ app.get('/', (req,res) => {
 });
 
 ///
-app.post('/chat', (req,res) => {
+app.get('/chat', (req,res) => {
   res.render("chat", user);          
 });
-app.post('/chat-admin-livingmagic3006@', (req,res) => {
+
+app.get('/chat-admin-livingmagic3006@', (req,res) => {
   res.render("chat-admin", user);          
+});
+
+app.get('/*', (req,res) => {
+  res.render("wait");
 });
 // app.post('/login', (req,res) => {
 //   const email = req.body.email.toUpperCase();
