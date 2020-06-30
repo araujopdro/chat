@@ -455,7 +455,7 @@
       }
     </style>
     
-    <script type="text/javascript">
+   <!--  <script type="text/javascript">
         function windowSize(){
             var w = document.documentElement.clientWidth;
             var h = document.documentElement.clientHeight;
@@ -470,7 +470,7 @@
         
         window.addEventListener("load", windowSize);
         window.addEventListener("resize", windowSize);
-    </script>
+    </script> -->
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.0.js"></script>
     <script>
@@ -489,7 +489,6 @@
           msgs_sent++;
           socket.emit('chat message',
             {
-              user_id: _id+"msg"+msgs_sent.toString(), 
               msg:$('#input_message').val()
             });
 
