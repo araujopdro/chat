@@ -489,7 +489,7 @@
       }
     </style>
     
-    <!-- <script type="text/javascript">
+   <!--  <script type="text/javascript">
         function windowSize(){
             var w = document.documentElement.clientWidth;
             var h = document.documentElement.clientHeight;
@@ -507,7 +507,7 @@
     </script> -->
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.0.js"></script>
-    <!-- <script>
+    <script>
       var socket = io(window.location.host, {transports: ['websocket']});
 
       socket.on('connect', () => {
@@ -523,7 +523,6 @@
           msgs_sent++;
           socket.emit('chat message',
             {
-              user_id: _id+"msg"+msgs_sent.toString(), 
               msg:$('#input_message').val()
             });
 
@@ -614,7 +613,7 @@
         switch(type) {
           case "message":
               inner_div.className = "message";
-              inner_div.id = data.user_id;
+              inner_div.id = "";
               span_name.textContent = "";
               span_msg.textContent = data.msg;
             break;
@@ -653,7 +652,7 @@
           $("#messages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 220);
         }
       }
-    </script> -->
+    </script>
   </head>
   <body>
     <img class="img-fundo" id="detalhe-normal" src="images/fundo.jpg">
