@@ -106,9 +106,9 @@ app.get('/chat', (req,res) => {
   res.render("chat");          
 });
 
-app.get('/chat-admin-livingmagic3006@', (req,res) => {
-  res.render("chat-admin");          
-});
+// app.get('/chat-admin-livingmagic3006@', (req,res) => {
+//   res.render("chat-admin");          
+// });
 
 app.get('/*', (req,res) => {
   res.render("wait");
