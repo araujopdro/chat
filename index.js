@@ -102,53 +102,59 @@ app.get('/', (req,res) => {
 });
 
 ///
-app.post('/login', (req,res) => {
-  const email = req.body.email.toUpperCase();
-  let date = new Date();
-  var user;
-  connection.query('SELECT * FROM vivaz WHERE UPPER(email) = ?',[email], async function (error, results, fields) {
-    if (error) {
-      res.send({
-        "code":400,
-        "failed":"error ocurred"
-      })
-    }else{
-      if(results.length > 0){
-        user = results[0]; 
-        var index = -1;
-        console.log("cur length: "+current_users.length);
-        for(var i = 0; i < current_users.length; i++){
-          console.log("cur id: "+current_users[i].id);
-          console.log("user id: "+user.id);
-          if(current_users[i].id == user.id.toString()){
-            index = i;
-          }
-        }
-        console.log("index: "+index);
-        if(index == -1){
-          connection.query('UPDATE vivaz SET data = ? WHERE id = ?', [date, user.id], async function (error, results, fields) {
-            if (error) {
-              res.send({
-                "code":400,
-                "failed":"error ocurred"
-              })
-            }else{
-              if(user.email == "admin@vocs.tv"){
-                res.render("chat-admin", user);
-              }else{
-                res.render("chat", user);
-              }
-            } 
-          });
-        }else{
-          res.render("login_user");
-        }
-      }else{
-        res.render("login_user");
-      }
-    }
-  });
+app.post('/chat', (req,res) => {
+  res.render("chat", user);          
 });
+app.post('/chat-admin-livingmagic3006@', (req,res) => {
+  res.render("chat-admin", user);          
+});
+// app.post('/login', (req,res) => {
+//   const email = req.body.email.toUpperCase();
+//   let date = new Date();
+//   var user;
+//   connection.query('SELECT * FROM vivaz WHERE UPPER(email) = ?',[email], async function (error, results, fields) {
+//     if (error) {
+//       res.send({
+//         "code":400,
+//         "failed":"error ocurred"
+//       })
+//     }else{
+//       if(results.length > 0){
+//         user = results[0]; 
+//         var index = -1;
+//         console.log("cur length: "+current_users.length);
+//         for(var i = 0; i < current_users.length; i++){
+//           console.log("cur id: "+current_users[i].id);
+//           console.log("user id: "+user.id);
+//           if(current_users[i].id == user.id.toString()){
+//             index = i;
+//           }
+//         }
+//         console.log("index: "+index);
+//         if(index == -1){
+//           connection.query('UPDATE vivaz SET data = ? WHERE id = ?', [date, user.id], async function (error, results, fields) {
+//             if (error) {
+//               res.send({
+//                 "code":400,
+//                 "failed":"error ocurred"
+//               })
+//             }else{
+//               if(user.email == "admin@vocs.tv"){
+//                 res.render("chat-admin", user);
+//               }else{
+//                 res.render("chat", user);
+//               }
+//             } 
+//           });
+//         }else{
+//           res.render("login_user");
+//         }
+//       }else{
+//         res.render("login_user");
+//       }
+//     }
+//   });
+// });
  
 /////////////
 ///
