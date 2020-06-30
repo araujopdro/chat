@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vivaz</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="https://kit.fontawesome.com/3f043c6910.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+
+
+
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+    <style type="text/css">
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        position: relative;
+        font-family: sans-serif;
+        color: white;
+        display: flex;
+      }
+
+      .img-fundo{
+        position: absolute;
+        height: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #detalhe-opacity{
+        position: absolute;
+        height: 60%;
+        left: auto;
+        bottom: 10%;
+        right: -5%;
+        transform: none;
+      }
+
+      .main {
+        flex-direction: column;
+        display: flex;
+
+        font-size: 1vw;
+        margin: auto;
+        width: 33%;
+        z-index: 1;
+      }
+
+      .f-box{
+        position: relative;
+          display: flex;
+      }
+
+      #f-box-a{
+          box-sizing: border-box;
+      }
+
+      .title{
+        background: rgb(230,54,110);
+        background: -moz-linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        background: -webkit-linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        background: linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e6366e",endColorstr="#6d4190",GradientType=1);
+
+        color: white;  
+
+        border-radius: 4em;
+          padding: 0.8em 2.4em;
+          box-sizing: border-box;
+          margin: 3em auto 3em;
+      }
+
+      #f-box-b{    
+          box-sizing: border-box; 
+      }
+
+      .sub{
+        color: white;
+          text-align: center;
+          width: 100%;
+          font-size: 1.6em;
+          margin-bottom: 5em;
+      }
+
+      .logo-holder{
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          margin: 3em;
+      }
+
+      .logo-holder img{    
+        width: 13em;
+      }
+      
+      .line-bottom{
+        width: 100%;
+        height: 4px;
+        border-radius: 20px;
+
+        background: rgb(230,54,110);
+        background: -moz-linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        background: -webkit-linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        background: linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e6366e",endColorstr="#6d4190",GradientType=1);
+      }
+
+      #title-break{
+        display: none;
+      }
+
+      .form-holder{
+        width: 100%;
+        background-color: white;
+        box-sizing: border-box;
+        padding: 2.5em;
+        color: #262626;
+        border-radius: 1.5em;
+        margin-bottom: 2em;
+      }
+
+      .form-pos-holder{
+        display: none;
+        text-align: center;
+        width: 100%;
+          padding: 2.5em 2.5em 0 2.5em;
+      }
+
+      .form-pos-holder h1{
+        font-size: 2.5em;
+      }
+
+      .form-pos-holder span{
+        font-size: 1.5em;
+      }
+
+      .form-pos-holder hr, .form-pos-holder br{
+        display: none;
+      }
+
+      .form-title{
+          display: block;
+      }
+
+      .form-title span{
+          font-size: 1.35em;
+          line-height: 1.6em;
+          vertical-align: middle;
+      }
+
+      .form-title i{
+          font-size: 1.75em;
+          margin-right: 0.5em;
+          vertical-align: middle;
+      }
+
+      .form-labels{
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: center;
+      }
+
+      .form-labels span{
+          width: 100%;
+      }
+
+      .form-inputs{
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+      }
+
+      .form-inputs input{
+        -webkit-box-shadow: 0px 2px 9px 1px rgba(0,0,0,0.2);
+        -moz-box-shadow: 0px 2px 9px 1px rgba(0,0,0,0.2);
+        box-shadow: 0px 2px 9px 1px rgba(0,0,0,0.2);
+
+          width: 100%;
+          font-size: 1em;
+          line-height: 1.2em;
+          margin: 0.5em 0 0.5em 0;
+          border: 0;
+            padding: 0.5em 1.3em;
+          box-sizing: border-box;
+          border-radius: 4em;
+      }
+
+      .form-inputs input::placeholder {
+        color: lightgrey;
+      }
+
+      .form-inputs input:-ms-input-placeholder {
+        color: lightgrey;
+      }
+
+      .form-inputs input::-ms-input-placeholder {
+        color: lightgrey;
+      }
+      
+      .form-inputs input:focus, #enviar:focus {
+          outline: none;
+      }
+
+      form{
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+      }
+
+      form:focus {
+          outline: none;
+      }
+
+      .submit{
+        width: 100%;
+        margin-top: 1.4em;
+      }
+
+      .submit input{
+        background: rgb(230,54,110);
+        background: -moz-linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        background: -webkit-linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        background: linear-gradient(90deg, rgba(230,54,110,1) 0%, rgba(109,65,144,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e6366e",endColorstr="#6d4190",GradientType=1);
+        border: 0;
+          border-radius: 1em;
+          color: white;
+          font-size: 1em;
+          padding: 0.6em 3em;
+          margin: auto;
+          display: block;
+          cursor: pointer;
+      }
+
+
+      #title-break{
+        display: none;
+      }
+      @media (min-width: 767px) and (max-width: 1024px) and (orientation: portrait)  {
+        .main{
+          font-size: 0.85vw !important;
+          width: 80% !important;
+        }
+      }
+
+      @media (min-width: 320px) and (max-width: 1024px) and (orientation: portrait)  {
+        .main{
+            flex-direction: column;
+            font-size: 1.2vw;
+            padding: 5em 0;
+            box-sizing: border-box;    
+            width: 100%;
+        }
+
+        #f-box-a {
+            padding: 0 8em 4em 8em;
+        }
+
+        .title{
+          text-align: center;
+            font-size: 3em;
+            margin: 2.5em auto 1.2em;
+        }
+
+        #f-box-b{
+          padding: 0 8em;
+          flex-direction: row;
+            align-items: flex-start;
+        }
+
+        .logo-holder img{
+            width: 35%;
+        }
+
+        .sub{
+            font-size: 5.5em;
+            margin-bottom: 2em;
+        }
+
+        .line-bottom{
+            width: 80%;
+            margin: auto;
+        }
+
+        #title-break{
+          display: block;
+        }
+
+
+        .form-holder{
+          width: 75%;
+          margin: 2em auto 5em;
+        }
+
+
+
+
+        .form-pos-holder{
+            padding: 4em 0 8em 0;
+            margin: 
+        }
+
+        .form-pos-holder h1{
+          font-size: 4em;
+        }
+
+        .form-pos-holder span{
+          font-size: 3.1em;
+          margin-bottom: 0.5em;
+        }
+
+        .form-pos-holder hr, .form-pos-holder br{
+          display: block;
+        }
+
+
+        .form-labels span{
+            font-size: 1.8em;
+        }
+
+        .form-title span{
+            font-size: 2.5em;
+            line-height: 3em;
+        }
+
+        .form-title i{
+            font-size: 3em;
+        }
+
+        .form-inputs input{
+            font-size: 2.2em;
+            line-height: 2.4em;
+            margin: 1em 0;
+        }
+
+        .submit input{
+          font-size: 2.2em;
+          margin: 1em auto;
+        }
+
+
+        #detalhe-opacity{
+            right: 30%;
+        }
+      }
+    </style>
+    
+    <script type="text/javascript">
+        function windowSize(){
+            var w = document.documentElement.clientWidth;
+            var h = document.documentElement.clientHeight;
+            if(w/h > 1.777999999){
+              $(".img-fundo" ).css("width", "100%");
+              $(".img-fundo" ).css( "height", "auto");
+            }else{
+              $( ".img-fundo" ).css( "height", "100%");
+              $( ".img-fundo" ).css( "width", "auto");
+            }
+        };
+        
+        window.addEventListener("load", windowSize);
+        window.addEventListener("resize", windowSize);
+    </script>
+  </head>
+  <body>
+    <img class="img-fundo" id="detalhe-normal" src="images/fundo_living.jpg">
+    <!-- <div class="logo-holder">
+      <img src="images/logo.png">
+    </div> -->
+    <!-- <div class="main">
+        <div class="form-holder">
+          <h2>Entre com o email cadastrado:</h2>
+          <form class="form" action="/login" method="POST" tabindex="1">
+            <div class="form-inputs">
+                <input class="noto-bold" type="email" name="email" placeholder="e-mail" required/>
+              </div>
+              <div class="submit"><input id="enviar" type="submit" name="sent" value="ENTRAR"></div>
+          </form>
+        </div>
+
+    </div> -->
+  </body>
+</html>
