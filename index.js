@@ -97,21 +97,21 @@ io.on('connect', (socket) => {
 
 ///
 
-app.get('/', (req,res) => {
-  res.render("wait");
-});
+// app.get('/', (req,res) => {
+//   res.render("wait");
+// });
 
-///
-app.get('/chat', (req,res) => {
-  res.render("chat");          
-});
+// ///
+// app.get('/chat', (req,res) => {
+//   res.render("chat");          
+// });
 
 app.get('/chat-admin-livingmagic3006@', (req,res) => {
   res.render("chat-admin");          
 });
 
 app.get('/*', (req,res) => {
-  res.render("wait");
+  res.render("chat");
 });
 // app.post('/login', (req,res) => {
 //   const email = req.body.email.toUpperCase();
