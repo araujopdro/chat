@@ -22,9 +22,9 @@
 
       .img-fundo{
         position: absolute;
-        height: 100%;
-        left: 50%;
-        transform: translateX(-50%);
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
       }
 
       #detalhe-opacity{
@@ -349,6 +349,15 @@
         margin: 1em;
       }
 
+      .img-logo{
+        text-align: center;
+      }
+
+      .img-logo img{
+        width: 17em;
+        margin: 2em;
+      }
+
       @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait)  {
         .main{
           font-size: 0.85vw !important;
@@ -656,15 +665,16 @@
     </script>
   </head>
   <body>
-    <!-- <img class="img-fundo" id="detalhe-normal" src="images/fundo.jpg">
-    <div class="logo-holder">
-      <img src="images/logo.png">
-    </div> -->
+    <img class="img-fundo" id="detalhe-normal" src="images/fundo_brilho.png">
     <div class="main">
       <!-- <div id="btn-download">
         <a href="https://linktree.com.br/new/vivazlapa" target="_blank"><img src="images/btn-download.png"></a>
       </div> -->
+      <div class="img-logo">
+        <img src="images/logo_magic.png">
+      </div>
       <div class="iframe-chat-container">
+        
         <div class="iframe-container">
           <iframe id="iframe" src="https://vocs.tv/transformaonline/embed.html" frameborder="0" autoplay; encrypted-media; allowfullscreen></iframe>
         </div>
