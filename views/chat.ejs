@@ -5,14 +5,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script src="https://kit.fontawesome.com/3f043c6910.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-81092903-45"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-81092903-45');
-    </script>
 
     <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
     <style type="text/css">
@@ -516,11 +508,11 @@
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.0.js"></script>
     <script>
-      var _id = <%- JSON.stringify(id) %>;
-      var _name = <%- JSON.stringify(nome) %>;
-      var _email = <%- JSON.stringify(email) %>;
+      // var _id = <%- JSON.stringify(id) %>;
+      // var _name = <%- JSON.stringify(nome) %>;
+      // var _email = <%- JSON.stringify(email) %>;
 
-      var socket = io(window.location.host, {query:'name='+_name+"&email="+_email+"&id="+_id, transports: ['websocket']});
+      var socket = io(window.location.host, {transports: ['websocket']});
 
       socket.on('connect', () => {
         console.log(socket.id);
@@ -536,7 +528,6 @@
           socket.emit('chat message',
             {
               user_id: _id+"msg"+msgs_sent.toString(), 
-              user_name: _name, 
               msg:$('#input_message').val()
             });
 
@@ -628,12 +619,12 @@
           case "message":
               inner_div.className = "message";
               inner_div.id = data.user_id;
-              span_name.textContent = data.user_name+":";
+              span_name.textContent = "";
               span_msg.textContent = data.msg;
             break;
           case "connected":
               inner_div.className = "entrou";
-              span_name.textContent = data;
+            span_name.textContent = data;
               span_msg.textContent = " entrou no chat.";
             break;
           case "uconnected":

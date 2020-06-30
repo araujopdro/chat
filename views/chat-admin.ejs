@@ -474,11 +474,7 @@
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.0.js"></script>
     <script>
-      var _id = <%- JSON.stringify(id) %>;
-      var _name = <%- JSON.stringify(nome) %>;
-      var _email = <%- JSON.stringify(email) %>;
-
-      var socket = io(window.location.host, {query:'name='+_name+"&email="+_email+"&id="+_id, transports: ['websocket']});
+      var socket = io(window.location.host, {transports: ['websocket']});
 
       socket.on('connect', () => {
         console.log(socket.id);
@@ -494,7 +490,6 @@
           socket.emit('chat message',
             {
               user_id: _id+"msg"+msgs_sent.toString(), 
-              user_name: _name, 
               msg:$('#input_message').val()
             });
 
@@ -580,7 +575,7 @@
           case "message":
               inner_div0.className = "message";
               //inner_div0.id = data.user_id;
-              span_name.textContent = data.user_name+":";
+              span_name.textContent = "";
               span_msg.textContent = data.msg;
 
               inner_div1.className = "message_icons";
