@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<title>MENSAGENS</title>
+		<script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+		<style type="text/css">
+			.message-holder{
+				display: flex;
+    			flex-direction: row;
+    			margin-bottom: 12px;
+    			font-family: sans-serif;
+    			box-sizing: border-box;
+    			padding: 9px;
+    			
+			}
+			.message-holder:nth-child(even){
+				background-color: #f6f6f6;
+			}
+			.div-name{
+			    flex: 0 25%;
+			    font-weight: bold;
+			    text-align: right;
+			    margin-right: 12px;
+			}
+			.div-text{
+				flex: 1;
+			}
+		</style>
+		<script type="text/javascript">
+			$(document).ready(function() {
+			    function send(){
+	                console.log("send");
+			        $.ajax({
+			            type: "get",
+  						dataType: 'json',
+			            url: "consulta.php",
+			            success:function(data)
+			            {
+			                //console.log(data);
+
+			    			$('#boxMessages').remove();
+			                if(data.length > 0){
+			                	CreateMsgElement(data);
+			        		}
+			                setTimeout(function(){
+			                    send();
+			                }, 5000);
+			            }
+			        });
+			    }
+			    send();
+			});
+
+			function CreateMsgElement(data){
+			    var c = document.createDocumentFragment();
+			    var inner_div = document.createElement("div");
+			    inner_div.id = "boxMessages";
+			    for(var i = 0; i < data.length; i++){
+			        var div = document.createElement("div");
+			        var div_name = document.createElement("div");
+			        var div_msg = document.createElement("div");
+			        var div_data = document.createElement("div");
+			        console.log(data[i].nome);
+			        console.log(data[i].mensagem);
+			        div_name.textContent = data[i].nome;
+			        div_msg.textContent = data[i].mensagem;
+			        div_data.textContent = data[i].data;
+
+			        //nomes das classes
+			        div.className = "message-holder";
+			        div_name.className = "div-name";
+			        div_msg.className = "div-text";
+			        div_data.className = "div-data";
+
+			        div.appendChild(div_name);
+			        div.appendChild(div_msg);
+			        div.appendChild(div_data);
+			        inner_div.appendChild(div);
+			    }
+			    c.appendChild(inner_div);
+			    $('#boxComentarios').append(c);
+			}
+		</script>
+	</head>
+	 <body>
+	 	<div style="width: 80%; margin: 0 auto;text-align: center;">
+	 		<span style="display: block; text-align: center;">
+				<img style="width: 100%; max-width: 260px; margin: 3em auto;" src="imgs/ead.png">
+			</span>
+			<div style="display: flex; width: 100%; text-align: center;     justify-content: space-around;">
+				<span><img style="max-width: 180px;" src="imgs/logo.png"></span>
+				<span><img style="max-width: 180px;margin-left: 2em;" src="imgs/observatorio.png"></span>
+			</div>
+	 		<h2 style="font-family: sans-serif;">MENSAGENS RECEBIDAS</h2>
+	 	</div>
+		<div id="boxComentarios"></div>	 
+	</body>
+</html>
