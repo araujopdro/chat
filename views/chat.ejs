@@ -117,7 +117,44 @@
       #title-break{
         display: none;
       }
+.question-container, #ajax_form{
+          width: 100%;
+          margin-top: 1em;
+          display: flex;
+      }
 
+      .question-container input{
+        border: none;
+          font-size: 0.8em;
+          flex: 1 0 0;
+          line-height: 1.6em;
+          box-sizing: border-box;
+          padding: 0.2em 1.5em;
+    border-radius: 1em 0 0 1em;    background-color: #f6f6f6;
+    border: 1px solid;
+      }
+.question-container input:focus {
+    outline: none;
+}
+      .question-container button{
+    border: none;
+    background-color: #30c4f5;
+    color: white;
+    font-weight: 300;
+    padding: 0 1.5em;
+    border-radius: 0 1em 1em 0;
+    border: 1px solid #30c4f5;
+    cursor: pointer;
+      }
+
+.question-container button:focus {
+    outline: none;
+}
+
+.question-container button:disabled {
+    
+    background-color: grey;
+}
       .form-holder{
         background-color: white;
         box-sizing: border-box;
@@ -364,8 +401,8 @@
       }
 
       .img-logo img{
-        width: 17em;
-        margin: 2em;
+        width: 14em;
+        margin: 1.5em;
       }
 
       @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait)  {
@@ -673,6 +710,28 @@
         }
       }
     </script>
+    <script type="text/javascript">
+      jQuery(document).ready(function(){
+        jQuery('#ajax_form').submit(function(){
+          var dados = jQuery( this ).serialize();
+              $('#chatbtn').attr("disabled","disabled");
+
+          jQuery.ajax({
+            type: "POST",
+            url: "mensagem.php",
+            data: dados,
+            success: function( data )
+            {
+                  $('#chatbtn').removeAttr('disabled');
+              alert('Mensagem enviada com sucesso!');
+              document.form1.reset();
+            }
+          });
+          
+          return false;
+        });
+      });
+      </script>
   </head>
   <body>
     <img class="img-fundo" id="detalhe-normal" src="images/fundo_brilho.png">
@@ -687,6 +746,15 @@
         
         <div class="iframe-container">
           <iframe id="iframe" src="https://vocs.tv/living/embed.html" frameborder="0" autoplay; encrypted-media; allowfullscreen></iframe>
+        </div>
+
+        <div class="question-container">
+          <form name="form1" action="" method="post" id="ajax_form" />
+            <input name="nome" type="hidden" id="nome" value="<?php echo $nome; ?>"/>         
+            <input name="email" type="hidden" id="email" value="<?php echo $email; ?>"/>
+            <input id="mensagem" type="text" name="mensagem" placeholder="Escreva aqui a sua pergunta.">
+            <button id="chatbtn" type="submit" name="enviar" >ENVIAR</button>     
+          </form> 
         </div>
         <!-- <div class="form-holder">
           <div id="calendar">
@@ -704,9 +772,6 @@
         </div> -->
       </div>
     </div>
-    <div class="modal">
-        <div id="close-div"><span id="close">X</span></div>
-        <script>(function(t,e,s,n){var o,a,c;t.SMCX=t.SMCX||[],e.getElementById(n)||(o=e.getElementsByTagName(s),a=o[o.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=n,c.src="https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgdzz_2BnBNuRnCYq_2BwBeS_2FF_2F8jLbPDNYZZTQ7F6KnQfDJHb.js",a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");</script>
-    </div>
+    
   </body>
 </html>
