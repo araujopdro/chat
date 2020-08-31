@@ -279,6 +279,7 @@
 
       .iframe-chat-container{
           display: flex;
+          flex-direction: column;
       }
 
       .iframe-container{
@@ -718,7 +719,7 @@
 
           jQuery.ajax({
             type: "POST",
-            url: "mensagem.php",
+            url: "https://vocs.tv/magicrudgeramos/mensagem.php",
             data: dados,
             success: function( data )
             {
