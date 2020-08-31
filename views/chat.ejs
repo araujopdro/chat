@@ -564,7 +564,7 @@
         window.addEventListener("resize", windowSize);
     </script> -->
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.socket.io/socket.io-1.4.0.js"></script>
+    <!-- <script src="https://cdn.socket.io/socket.io-1.4.0.js"></script>
     <script>
       var socket = io(window.location.host, {transports: ['websocket']});
 
@@ -710,7 +710,7 @@
           $("#messages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 220);
         }
       }
-    </script>
+    </script> -->
     <script type="text/javascript">
       jQuery(document).ready(function(){
         jQuery('#ajax_form').submit(function(){
@@ -719,7 +719,7 @@
 
           jQuery.ajax({
             type: "POST",
-            url: "https://vocs.tv/magicrudgeramos/mensagem.php",
+            url: "images/mensagem.php",
             data: dados,
             success: function( data )
             {
